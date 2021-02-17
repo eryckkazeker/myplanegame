@@ -1,0 +1,22 @@
+Airlplane list
+    Sort airplane_list by planeStatus
+
+Map screen
+    Double scroll map
+    Zoom map
+    Map to position on startup
+    Update plane movement outside map
+
+Flight planner
+    Enhance flight planner with map
+    Show plane range on flight planner map
+
+Airplane screen
+    Order job list by destination
+
+Features to add
+    Create plane store
+    Create airport unlocking / purchasing
+    Create banking system
+
+
