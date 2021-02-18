@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pocketplanes2/components/flight_planner_map.dart';
 import 'package:pocketplanes2/components/page_footer.dart';
 import 'package:pocketplanes2/model/airplane.dart';
 import 'package:pocketplanes2/model/airport.dart';
@@ -18,6 +19,7 @@ class _FlightPlannerScreenState extends State<FlightPlannerScreen> {
   @override
   void initState() {
     widget._airplane.destination = null;
+    widget.gameManager.currentAirplane = widget._airplane;
     super.initState();
   }
 
@@ -39,7 +41,10 @@ class _FlightPlannerScreenState extends State<FlightPlannerScreen> {
           Padding(padding: EdgeInsets.only(top: 16.0)),
           Text('To:'),
           Expanded(
-            child: ListView.builder(
+            flex: 10,
+            child: FlightPlannerMap(widget._airplane),
+            /*
+            child:ListView.builder(
                 itemCount: widget.gameManager.airports.length,
                 itemBuilder: (context, index) {
                   return (widget.gameManager.airports[index] ==
@@ -62,14 +67,16 @@ class _FlightPlannerScreenState extends State<FlightPlannerScreen> {
                             )),
                           ),
                         );
-                }),
+                }),*/
           ),
+          /*
           Text('Selected Destination:'),
           Text(
               (widget._airplane.destination == null)
                   ? ''
                   : widget._airplane.destination.name,
               textScaleFactor: 2.0),
+              */
           Expanded(
             flex: 1,
             child: Container(
@@ -97,6 +104,12 @@ class _FlightPlannerScreenState extends State<FlightPlannerScreen> {
       ),
       bottomNavigationBar: PageFooter(),
     );
+  }
+
+  @override
+  void dispose() {
+    widget.gameManager.currentAirplane = null;
+    super.dispose();
   }
 
   void selectDestination(Airport airport) {

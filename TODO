@@ -2,10 +2,7 @@ Airlplane list
     Sort airplane_list by planeStatus
 
 Map screen
-    Double scroll map
-    Zoom map
-    Map to position on startup
-    Update plane movement outside map
+    There's still room for improvement
 
 Flight planner
     Enhance flight planner with map
@@ -14,9 +11,13 @@ Flight planner
 Airplane screen
     Order job list by destination
 
+Job generation
+    Change from future.delayed to timer.periodic
+
 Features to add
     Create plane store
     Create airport unlocking / purchasing
     Create banking system
+    
 
 

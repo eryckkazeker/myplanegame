@@ -1,12 +1,17 @@
+import 'dart:async';
+
 import 'package:pocketplanes2/model/airplane.dart';
 import 'package:pocketplanes2/model/airport.dart';
 import 'package:pocketplanes2/model/player.dart';
 import 'package:pocketplanes2/util/game_manager.dart';
+import 'package:pocketplanes2/util/job_generator.dart';
 
 class GameGenerator {
 
   static GameManager gameManager = GameManager();
+  static JobGenerator jobGenerator = JobGenerator();
   static Player player = Player();
+  static Timer timer;
 
   GameGenerator();
 
@@ -42,7 +47,10 @@ class GameGenerator {
     Airplane pl2 = Airplane('PL-002',a2, range: 230.00, cargoCapacity: 1, passengerCapacity: 1);
     gameManager.addPlane(pl1);
     gameManager.addPlane(pl2);
+
+    jobGenerator.generateJobs();
     
+    timer = Timer.periodic(Duration(seconds: 30), (timer) { jobGenerator.generateJobs(); });
 
     player.balance = 500;
   }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:pocketplanes2/enums/job_type.dart';
 import 'package:pocketplanes2/enums/plane_status.dart';
 import 'package:pocketplanes2/model/airport.dart';
@@ -19,6 +21,7 @@ class Airplane extends MapObject{
   PlaneStatus _planeStatus = PlaneStatus.landed;
   Player _player = Player();
   double _flightTime;
+  Timer _moveTimer;
 
   Airplane(String name, Airport airport,
       {double range, int passengerCapacity, int cargoCapacity}) {
@@ -97,11 +100,14 @@ class Airplane extends MapObject{
     Player().pay(flightCost);
 
     _planeStatus = PlaneStatus.flying;
-    flightTime = 15;
-    Future.delayed(Duration(seconds: 15), () {
+    flightTime = 30;
+    
+    Future.delayed(Duration(seconds: flightTime.toInt()), () {
       land();
     });
 
+    _moveTimer = Timer.periodic(Duration(seconds: 1), (timer) { move();});
+    
     return true;
     
   }
@@ -110,6 +116,7 @@ class Airplane extends MapObject{
     currentAirport = destination;
     _destination = null;
     _planeStatus = PlaneStatus.landed;
+    _moveTimer.cancel();
     unloadPlane();
   }
 

@@ -21,8 +21,6 @@ class _AirplaneMapObjectState extends State<AirplaneMapObject> {
   void initState() {
     super.initState();
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      //FIXME this should not be here
-      widget._airplane.move();
       setState(() {});
     });
   }

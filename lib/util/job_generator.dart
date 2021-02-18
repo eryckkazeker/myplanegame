@@ -6,6 +6,7 @@ import 'package:pocketplanes2/model/job.dart';
 import 'package:pocketplanes2/util/game_manager.dart';
 
 class JobGenerator {
+
   GameManager _gameManager = GameManager();
 
   void generateJobs() {
@@ -31,8 +32,6 @@ class JobGenerator {
         dev.log('Adding job with value ${job.value}');
         airport.addJob(job);
       }
-
-      Future.delayed(Duration(minutes: 1), () {generateJobs();});
     });
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pocketplanes2/screens/map_screen.dart';
 import 'package:pocketplanes2/util/game_generator.dart';
-import 'package:pocketplanes2/util/job_generator.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -10,9 +10,7 @@ void main() {
 class MyApp extends StatelessWidget {
 
   MyApp() {
-    JobGenerator jobGenerator = JobGenerator();
     GameGenerator.generateGame();
-    jobGenerator.generateJobs();
   }
 
   // This widget is the root of your application.
