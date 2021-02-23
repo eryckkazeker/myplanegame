@@ -1,13 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:pocketplanes2/components/airplane_map_object.dart';
-import 'package:pocketplanes2/components/airport_map_object.dart';
-import 'package:pocketplanes2/components/plane_route_painter.dart';
-import 'package:pocketplanes2/enums/plane_status.dart';
+import 'package:pocketplanes2/components/map/airplane_map_object.dart';
+import 'package:pocketplanes2/components/map/airport_map_object.dart';
+import 'package:pocketplanes2/components/painters/plane_route_painter.dart';
 import 'package:pocketplanes2/util/game_manager.dart';
 
 class MapComponent extends StatefulWidget {
+
+  final Function _mapClickCallback;
+
+  MapComponent(this._mapClickCallback);
+
   @override
   _MapComponentState createState() => _MapComponentState();
 }
@@ -46,11 +50,11 @@ class _MapComponentState extends State<MapComponent> {
     super.initState();
 
     _manager.airplanes.forEach((airplane) {
-      _gameObjectsStack.children.add(AirplaneMapObject(airplane));
+      _gameObjectsStack.children.add(AirplaneMapObject(airplane, null));
     });
 
     _manager.airports.forEach((airport) {
-      _gameObjectsStack.children.add(AirportMapObject(airport));
+      _gameObjectsStack.children.add(AirportMapObject(airport, widget._mapClickCallback));
     });
 
     _transformationController.value = _defaultPosition;

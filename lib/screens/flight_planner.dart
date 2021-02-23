@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:pocketplanes2/components/flight_planner_map.dart';
 import 'package:pocketplanes2/components/page_footer.dart';
 import 'package:pocketplanes2/model/airplane.dart';
 import 'package:pocketplanes2/model/airport.dart';
 import 'package:pocketplanes2/util/game_manager.dart';
+import 'package:pocketplanes2/util/geography_helper.dart';
 
 class FlightPlannerScreen extends StatefulWidget {
   final GameManager gameManager = GameManager();
@@ -16,6 +19,7 @@ class FlightPlannerScreen extends StatefulWidget {
 }
 
 class _FlightPlannerScreenState extends State<FlightPlannerScreen> {
+
   @override
   void initState() {
     widget._airplane.destination = null;
@@ -42,41 +46,8 @@ class _FlightPlannerScreenState extends State<FlightPlannerScreen> {
           Text('To:'),
           Expanded(
             flex: 10,
-            child: FlightPlannerMap(widget._airplane),
-            /*
-            child:ListView.builder(
-                itemCount: widget.gameManager.airports.length,
-                itemBuilder: (context, index) {
-                  return (widget.gameManager.airports[index] ==
-                          widget._airplane.currentAirport)
-                      ? Container()
-                      : Container(
-                          height: 48,
-                          child: GestureDetector(
-                            onTap: () {
-                              selectDestination(
-                                  widget.gameManager.airports[index]);
-                            },
-                            child: Card(
-                                child: Center(
-                              child: Text(
-                                widget.gameManager.airports[index].name,
-                                textAlign: TextAlign.center,
-                                textScaleFactor: 1.6,
-                              ),
-                            )),
-                          ),
-                        );
-                }),*/
+            child: FlightPlannerMap(widget._airplane, selectDestination),
           ),
-          /*
-          Text('Selected Destination:'),
-          Text(
-              (widget._airplane.destination == null)
-                  ? ''
-                  : widget._airplane.destination.name,
-              textScaleFactor: 2.0),
-              */
           Expanded(
             flex: 1,
             child: Container(
@@ -112,13 +83,20 @@ class _FlightPlannerScreenState extends State<FlightPlannerScreen> {
     super.dispose();
   }
 
-  void selectDestination(Airport airport) {
+  void selectDestination(BuildContext context, Airport airport) {
+    log('selected destination ${airport.name}');
     if (airport == widget._airplane.currentAirport) {
+      return;
+    }
+
+    if(!GeographyHelper.isInRange(airport, widget._airplane)) {
       return;
     }
 
     widget._airplane.destination = airport;
 
-    setState(() {});
+    setState(() {
+      
+    });
   }
 }

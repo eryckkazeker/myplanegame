@@ -1,7 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:pocketplanes2/components/job_list.dart';
+import 'package:pocketplanes2/components/job/job_list.dart';
+import 'package:pocketplanes2/components/job/layover_job_list.dart';
 import 'package:pocketplanes2/components/page_footer.dart';
 import 'package:pocketplanes2/model/airplane.dart';
 import 'package:pocketplanes2/model/job.dart';
@@ -21,7 +22,7 @@ class _AirplaneScreenState extends State<AirplaneScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget._airplane.name),
+        title: Text('${widget._airplane.name} / ${widget._airplane.modelName}'),
       ),
       body: Column(
         mainAxisSize: MainAxisSize.min,
@@ -75,8 +76,8 @@ class _AirplaneScreenState extends State<AirplaneScreen> {
                     children: [
                       Text('Layover Jobs:'),
                       Expanded(
-                        child: JobListComponent(
-                            widget._airplane.currentAirport.layovers, boardLayover),
+                        child: LayoverJobListComponent(
+                            widget._airplane.currentAirport, boardLayover),
                       ),
                     ],
                   ),

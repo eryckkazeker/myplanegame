@@ -5,19 +5,23 @@ Map screen
     There's still room for improvement
 
 Flight planner
-    Enhance flight planner with map
-    Show plane range on flight planner map
 
 Airplane screen
     Order job list by destination
 
 Job generation
-    Change from future.delayed to timer.periodic
+    Refresh airport jobs after some time
+
+Save / Load
+    Create splash screen for game loading
+    Save layover jobs
+    Fix game being loaded when returning after back button is pressed
 
 Features to add
-    Create plane store
     Create airport unlocking / purchasing
     Create banking system
+    Delete Layover Jobs
+    Multi destination flight
     
 
 

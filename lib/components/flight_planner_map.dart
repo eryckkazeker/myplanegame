@@ -1,18 +1,17 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:pocketplanes2/components/airport_map_object.dart';
-import 'package:pocketplanes2/components/plane_range_painter.dart';
-import 'package:pocketplanes2/components/plane_route_painter.dart';
+import 'package:pocketplanes2/components/map/airport_map_object.dart';
+import 'package:pocketplanes2/components/painters/plane_range_painter.dart';
 import 'package:pocketplanes2/model/airplane.dart';
 import 'package:pocketplanes2/util/game_manager.dart';
 
 class FlightPlannerMap extends StatefulWidget {
   final Airplane _airplane;
+  final Function _clickCallback;
 
-  FlightPlannerMap(this._airplane);
-  
+  FlightPlannerMap(this._airplane, this._clickCallback);
+
   @override
   _FlightPlannerMapState createState() => _FlightPlannerMapState();
 }
@@ -23,9 +22,11 @@ class _FlightPlannerMapState extends State<FlightPlannerMap> {
       0.0, 0.0, 0.0, 0.8, 0.0, -1622, -2026, 0.0, 1.0);
   final _transformationController = TransformationController();
 
+  double rangeTick = 0.0;
+  ValueNotifier<double> notifier;
   Timer _timer;
 
-  final Stack _gameObjectsStack = Stack(
+  Stack _gameObjectsStack = Stack(
     children: [
       Container(
         child: Image.asset(
@@ -33,16 +34,6 @@ class _FlightPlannerMapState extends State<FlightPlannerMap> {
           scale: 0.5,
         ),
       ),
-      Positioned.fill(
-        child: Container(
-          width: 200,
-          height: 200,
-          color: Colors.transparent,
-          child: CustomPaint(
-            painter: PlaneRangePainter(),
-          ),
-        ),
-      )
     ],
   );
 
@@ -50,15 +41,33 @@ class _FlightPlannerMapState extends State<FlightPlannerMap> {
   void initState() {
     super.initState();
 
+    notifier = ValueNotifier<double>(rangeTick);
+
+    _gameObjectsStack.children.add(
+      Positioned.fill(
+        child: Container(
+          key: UniqueKey(),
+          color: Colors.transparent,
+          child: CustomPaint(
+            painter:
+                PlaneRangePainter(notifier),
+          ),
+        ),
+      )
+    );
+
     _manager.airports.forEach((airport) {
-      _gameObjectsStack.children.add(AirportMapObject(airport));
+      _gameObjectsStack.children
+          .add(AirportMapObject(airport, widget._clickCallback));
     });
 
     _transformationController.value = _defaultPosition;
 
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      log('plane x=${widget._airplane.x}\nplane y=${widget._airplane.y}\npos12=${_transformationController.value[12]}\npos13=${_transformationController.value[13]}');
-     });
+    _timer = Timer.periodic(Duration(milliseconds: 30), (timer) {
+      setState(() {
+        notifier.notifyListeners();
+      });
+    });
 
     setState(() {});
   }
@@ -75,6 +84,7 @@ class _FlightPlannerMapState extends State<FlightPlannerMap> {
 
   @override
   void dispose() {
+    notifier.dispose();
     _timer.cancel();
     super.dispose();
   }

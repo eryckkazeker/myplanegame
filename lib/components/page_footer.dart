@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pocketplanes2/model/player.dart';
 import 'package:pocketplanes2/screens/airplane_list.dart';
 import 'package:pocketplanes2/screens/map_screen.dart';
+import 'package:pocketplanes2/screens/store_screen.dart';
 
 class PageFooter extends StatelessWidget {
   final Player player = Player();
@@ -18,25 +19,27 @@ class PageFooter extends StatelessWidget {
               Expanded(
                   child: RaisedButton(
                 onPressed: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => MapScreen()));
+                  Navigator.pushAndRemoveUntil(context,
+                      MaterialPageRoute(builder: (context) => MapScreen()),
+                      (route) => false);
                 },
                 child: Text('Map'),
               )),
               Expanded(
                   child: RaisedButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AirplaneListScreen()));
+                  Navigator.pushAndRemoveUntil(context,
+                      MaterialPageRoute(builder: (context) => AirplaneListScreen()),
+                      (route) => false);
                 },
                 child: Text('Planes'),
               )),
               Expanded(
                   child: RaisedButton(
                 onPressed: () {
-                  
+                  Navigator.pushAndRemoveUntil(context,
+                      MaterialPageRoute(builder: (context) => StoreScreen()),
+                      (route) => false);
                 },
                 child: Text('Store'),
               ))

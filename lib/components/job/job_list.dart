@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pocketplanes2/components/job_widget.dart';
+import 'package:pocketplanes2/components/job/job_widget.dart';
 import 'package:pocketplanes2/model/job.dart';
 
 class JobListComponent extends StatefulWidget {

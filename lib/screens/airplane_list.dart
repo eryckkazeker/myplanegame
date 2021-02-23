@@ -75,7 +75,7 @@ class AirplaneListItem extends StatelessWidget {
           child: Column(
             children: [
               Icon(_airplane.planeStatus == PlaneStatus.landed ? Icons.flight_land : Icons.flight_takeoff),
-              Text('${_airplane.name}'),
+              Text('${_airplane.name} / ${_airplane.modelName}'),
               Text(_airplane.planeStatus == PlaneStatus.landed ? 'At ${_airplane.currentAirport.name}' :
               'Flying to ${_airplane.destination.name}'),
               Text(

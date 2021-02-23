@@ -1,8 +1,11 @@
-import 'dart:async';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:pocketplanes2/enums/plane_status.dart';
 import 'package:pocketplanes2/model/airplane.dart';
 import 'package:pocketplanes2/model/airport.dart';
-import 'package:pocketplanes2/util/job_generator.dart';
+import 'package:pocketplanes2/model/player.dart';
+import 'package:pocketplanes2/util/file_manager.dart';
 
 class GameManager {
 
@@ -10,12 +13,12 @@ class GameManager {
   static const int MAX_JOBS__PER_AIRPORT = 5;
   static const int FUEL_COST = 1;
 
-  Timer _timer;
-
   GameManager._internal();
 
   List<Airport> _airports = List<Airport>();
   List<Airplane> _airplanes = List<Airplane>();
+  List<Airplane> _store = List<Airplane>();
+
   Airplane _currentAirplane;
 
   factory GameManager() {
@@ -26,6 +29,7 @@ class GameManager {
 
   List<Airport> get airports => this._airports;
   List<Airplane> get airplanes => this._airplanes;
+  List<Airplane> get store => this._store;
 
   Airplane get currentAirplane => this._currentAirplane;
 
@@ -41,4 +45,57 @@ class GameManager {
     this._currentAirplane = current;
   }
 
+  void saveGame() {
+    debugPrint('Saving game data');
+
+    debugPrint('Saving player data');
+    var playerData = jsonEncode(Player().toJson());
+    debugPrint('Player data [$playerData]');
+
+    debugPrint('Saving airplanes');
+    var airplaneData = jsonEncode(airplanes.map((e) => e.toJson()).toList());
+    debugPrint('Airplanes data [$airplaneData]');
+
+    Map<String, dynamic> saveData = {
+      'player': Player().toJson(),
+      'airplanes': airplanes.map((e) => e.toJson()).toList(),
+      'airports': airports.map((e) => e.toJson()).toList()
+    };
+
+    var saveDataJson = jsonEncode(saveData);
+    debugPrint('Savedata: [$saveDataJson]');
+    FileManager.saveDataToFile(saveDataJson);
+  }
+
+  void loadGame() async {
+    debugPrint('Loading game');
+    var gameData = await FileManager.readSaveFile();
+    debugPrint('loaded data: [$gameData]');
+    var gameDataMap = jsonDecode(gameData);
+
+    debugPrint('loading Player Data');
+    Player().balance = gameDataMap['player']['balance'];
+    debugPrint('Player balance [${Player().balance}]');
+    
+    debugPrint('loading airplanes');
+    
+    var airplaneDataMap = gameDataMap['airplanes'];
+    var airplaneList = (airplaneDataMap as List).map((e) {
+      var airplane = Airplane.fromJson(e);
+      if (airplane.planeStatus == PlaneStatus.flying) {
+        airplane.resumeFlight();
+      }
+      return airplane;
+      }).toList();
+    GameManager().airplanes.addAll(airplaneList);
+
+    debugPrint('loading airport data');
+    var airportDataMap = gameDataMap['airports'];
+    (airportDataMap as List).map((e) {
+      var airport = airports.singleWhere((element) => element.name == e['name']);
+      airport.layoverCapacity = e['layoverCapacity'];
+      return airport;
+    }).toList();
+    debugPrint('Done Loading');
+  }
 }

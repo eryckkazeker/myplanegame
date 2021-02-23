@@ -11,9 +11,9 @@ class PlaneRoutePainter extends CustomPainter {
     _manager.airplanes.forEach((airplane) {
       if (airplane.planeStatus == PlaneStatus.flying) {
         final p1 = Offset(
-            airplane.currentAirport.x + 20, airplane.currentAirport.y + 20);
+            airplane.currentAirport.x + 10, airplane.currentAirport.y + 10);
         final p2 =
-            Offset(airplane.destination.x + 20, airplane.destination.y + 20);
+            Offset(airplane.destination.x + 10, airplane.destination.y + 10);
         final paint = Paint();
         paint.color = Colors.black;
         paint.strokeWidth = 2.0;

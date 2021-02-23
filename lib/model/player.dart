@@ -30,4 +30,8 @@ class Player {
   void pay(int value) {
     this.balance -= value;
   }
+
+  Map<String, dynamic> toJson() => {
+    'balance': _balance
+  };
 }
