@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:pocketplanes2/screens/map_screen.dart';
-import 'package:pocketplanes2/util/game_generator.dart';
+import 'package:pocketplanes2/screens/splash_screen.dart';
 import 'package:pocketplanes2/util/game_manager.dart';
 
 
@@ -12,9 +9,7 @@ void main() {
 
 class MyApp extends StatefulWidget {
 
-  MyApp() {
-    
-  }
+  MyApp();
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -24,10 +19,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    WidgetsBinding.instance.scheduleFrameCallback((timeStamp) {
-      GameGenerator.generateGame();
-    });
-    
     super.initState();
     WidgetsBinding.instance.addObserver(this);
   }
@@ -35,7 +26,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'My Pocket Planes',
+      title: 'Plane Game Attempt',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         // This makes the visual density adapt to the platform that you run
@@ -43,7 +34,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MapScreen()
+      home: SplashScreen()
     );
   }
 

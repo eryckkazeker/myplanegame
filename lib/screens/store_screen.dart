@@ -12,19 +12,23 @@ class StoreScreen extends StatefulWidget {
 }
 
 class _StoreScreenState extends State<StoreScreen> {
-
   var gameManager = GameManager();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Store'),),
-      body: ListView.builder(
-        itemCount: gameManager.store.length,
-        itemBuilder: (context, index) {
-          return StoreAirplaneItem(gameManager.store[index], buyAirplane);
-        }),
-      bottomNavigationBar: PageFooter(),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Store'),
+        ),
+        body: ListView.builder(
+            itemCount: gameManager.store.length,
+            itemBuilder: (context, index) {
+              return StoreAirplaneItem(gameManager.store[index], buyAirplane);
+            }),
+        bottomNavigationBar: PageFooter(),
+      ),
     );
   }
 
@@ -35,18 +39,15 @@ class _StoreScreenState extends State<StoreScreen> {
 
     Player().pay(airplane.price);
     airplane.currentAirport = airport;
-    airplane.name = 'PL${(gameManager.airplanes.length+1).toString().padLeft(4,'0')}';
+    airplane.name =
+        'PL${(gameManager.airplanes.length + 1).toString().padLeft(4, '0')}';
     gameManager.addPlane(airplane);
 
-    setState(() {
-      
-    });
-
+    setState(() {});
   }
 }
 
 class StoreAirplaneItem extends StatefulWidget {
-
   final Airplane _airplane;
   final Function _clickCallback;
 
@@ -62,21 +63,29 @@ class _StoreAirplaneItemState extends State<StoreAirplaneItem> {
     return Card(
       child: Row(
         children: [
-          Expanded(child: Column(children: [
-            Text(widget._airplane.modelName),
-            Text('Passengers: ${widget._airplane.passengerCapacity}'),
-            Text('Cargo: ${widget._airplane.cargoCapacity}')
-          ],)),
+          Expanded(
+              child: Column(
+            children: [
+              Text(widget._airplane.modelName),
+              Text('Passengers: ${widget._airplane.passengerCapacity}'),
+              Text('Cargo: ${widget._airplane.cargoCapacity}')
+            ],
+          )),
           Expanded(child: Text('\$ ${widget._airplane.price}')),
           Expanded(
-                      child: RaisedButton(child: Text('BUY'),
-            onPressed: (Player().balance < widget._airplane.price) ? null :
-            () {
-              showDialog(context: context, builder: (context) => StoreMapDialog()).then((selectedAirport) => {
-                widget._clickCallback(widget._airplane, selectedAirport)
-              });
-            }
-            ),
+            child: RaisedButton(
+                child: Text('BUY'),
+                onPressed: (Player().balance < widget._airplane.price)
+                    ? null
+                    : () {
+                        showDialog(
+                                context: context,
+                                builder: (context) => StoreMapDialog())
+                            .then((selectedAirport) => {
+                                  widget._clickCallback(
+                                      widget._airplane, selectedAirport)
+                                });
+                      }),
           )
         ],
       ),

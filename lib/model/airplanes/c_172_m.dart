@@ -10,7 +10,8 @@ class C172M extends Airplane {
             range: AirplaneConstants.C172RANGE,
             cargoCapacity: AirplaneConstants.C172M_CAPACITY,
             passengerCapacity: AirplaneConstants.C172M_CAPACITY,
-            price: PricingConstants.C172_PRICE);
+            price: PricingConstants.C172_PRICE,
+            speed: SpeedConstants.C172_SPEED);
 
   @override
   String get modelName => this._modelName;

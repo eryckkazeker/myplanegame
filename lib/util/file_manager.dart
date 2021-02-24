@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FileManager {
@@ -10,6 +11,7 @@ class FileManager {
 
   static Future<File> _getSaveDataFile() async {
     var path = await _localPath();
+    debugPrint('File path is [$path]');
     return File('$path/savegame.json');
   }
 

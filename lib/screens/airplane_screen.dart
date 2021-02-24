@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:pocketplanes2/components/job/job_list.dart';
+import 'package:pocketplanes2/components/job/airplane_job_list.dart';
+import 'package:pocketplanes2/components/job/airport_job_list.dart';
 import 'package:pocketplanes2/components/job/layover_job_list.dart';
 import 'package:pocketplanes2/components/page_footer.dart';
 import 'package:pocketplanes2/model/airplane.dart';
@@ -18,6 +20,16 @@ class AirplaneScreen extends StatefulWidget {
 }
 
 class _AirplaneScreenState extends State<AirplaneScreen> {
+  Timer _timer;
+  
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(Duration(milliseconds: 500), (timer) { setState(() {
+      
+    }); });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,8 +53,8 @@ class _AirplaneScreenState extends State<AirplaneScreen> {
                 children: [
                   Text('Passengers:'),
                   Expanded(
-                      child: JobListComponent(
-                          widget._airplane.passengerJobs, unboardJob))
+                      child: AirplaneJobListComponent(
+                          widget._airplane.passengerJobs, widget._airplane.passengerCapacity, unboardJob))
                 ],
               )),
               Expanded(
@@ -50,8 +62,8 @@ class _AirplaneScreenState extends State<AirplaneScreen> {
                 children: [
                   Text('Cargo:'),
                   Expanded(
-                      child: JobListComponent(
-                          widget._airplane.cargoJobs, unboardJob))
+                      child: AirplaneJobListComponent(
+                          widget._airplane.cargoJobs, widget._airplane.cargoCapacity, unboardJob))
                 ],
               ))
             ],
@@ -64,7 +76,7 @@ class _AirplaneScreenState extends State<AirplaneScreen> {
                     children: [
                       Text('Available Jobs:'),
                       Expanded(
-                        child: JobListComponent(
+                        child: AirportJobListComponent(
                             widget._airplane.currentAirport.currentJobs,
                             boardJob),
                       ),
@@ -134,5 +146,11 @@ class _AirplaneScreenState extends State<AirplaneScreen> {
     }
 
     setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 }

@@ -90,7 +90,7 @@ class GameGenerator {
     gameManager.addPlane(pl1);
     gameManager.addPlane(pl3);
 
-    player.balance = 30500;
+    player.balance = 17000;
   }
 
   static void buildStore() {

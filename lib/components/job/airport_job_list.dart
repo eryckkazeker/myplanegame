@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:pocketplanes2/components/job/job_widget.dart';
 import 'package:pocketplanes2/model/job.dart';
 
-class JobListComponent extends StatefulWidget {
+class AirportJobListComponent extends StatefulWidget {
   final List<Job> _jobList;
   final Function(Job) _clickCallBack;
 
-  JobListComponent(this._jobList, this._clickCallBack);
+  AirportJobListComponent(this._jobList, this._clickCallBack);
 
   @override
-  _JobListComponentState createState() => _JobListComponentState();
+  _AirportJobListComponentState createState() => _AirportJobListComponentState();
 }
 
-class _JobListComponentState extends State<JobListComponent> {
+class _AirportJobListComponentState extends State<AirportJobListComponent> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(

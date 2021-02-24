@@ -21,23 +21,25 @@ class _AirportMapObjectState extends State<AirportMapObject> {
           onTap: () {
             widget._clickCallBack(context, widget._airport);
           },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Align(
-                  alignment: Alignment.topLeft,
-                  child: Icon(
-                    Icons.house,
-                    size: 15,
-                  )),
-              Text(
-                widget._airport.name,
-                style: TextStyle(
-                    fontSize: 10,
-                    color: Colors.blue,
-                    backgroundColor: Colors.white),
-              ),
-            ],
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Align(
+                    alignment: Alignment.topLeft,
+                    child: Icon(
+                      Icons.house,
+                      size: 15,
+                    )),
+                Text(
+                  widget._airport.name,
+                  style: TextStyle(
+                      fontSize: 10,
+                      color: Colors.blue,
+                      backgroundColor: Colors.white),
+                ),
+              ],
+            ),
           ),
         ),
       ),

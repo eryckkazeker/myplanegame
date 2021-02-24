@@ -17,6 +17,7 @@ class Airplane extends MapObject {
   double _range;
   int _cargoCapacity;
   int _passengerCapacity;
+  int _speed;
   List<Job> _cargoJobs = List<Job>();
   List<Job> _passengerJobs = List<Job>();
   Airport _currentAirport;
@@ -27,7 +28,7 @@ class Airplane extends MapObject {
   Timer _moveTimer;
 
   Airplane(String name, Airport airport,
-      {double range, int passengerCapacity, int cargoCapacity, int price}) {
+      {double range, int passengerCapacity, int cargoCapacity, int price, int speed}) {
     this._name = name;
     this._currentAirport = airport;
     this.x = currentAirport?.x;
@@ -36,6 +37,7 @@ class Airplane extends MapObject {
     this._passengerCapacity = passengerCapacity;
     this._cargoCapacity = cargoCapacity;
     this._price = price;
+    this._speed = speed;
   }
 
   String get modelName => this._modelName;
@@ -44,6 +46,7 @@ class Airplane extends MapObject {
   int get cargoCapacity => this._cargoCapacity;
   int get passengerCapacity => this._passengerCapacity;
   int get price => this._price;
+  int get speed => this._speed;
   List<Job> get cargoJobs => this._cargoJobs;
   List<Job> get passengerJobs => this._passengerJobs;
   Airport get currentAirport => this._currentAirport;
@@ -112,7 +115,7 @@ class Airplane extends MapObject {
     Player().pay(flightCost);
 
     _planeStatus = PlaneStatus.flying;
-    flightTime = 30;
+    flightTime = GeographyHelper.flightTimeFromDistance(this, this.destination);
 
     Future.delayed(Duration(seconds: flightTime.toInt()), () {
       land();
@@ -185,6 +188,7 @@ class Airplane extends MapObject {
     'passengerCapacity': _passengerCapacity,
     'cargoCapacity': _cargoCapacity,
     'range': _range,
+    'speed': _speed,
     'passengerJobs': _passengerJobs.map((item) => item.toJson()).toList(),
     'cargoJobs': _cargoJobs.map((item) => item.toJson()).toList(),
     'flightTime': _flightTime,
@@ -197,6 +201,7 @@ class Airplane extends MapObject {
     _modelName = json['modelName'],
     _name = json['name'],
     _range = json['range'],
+    _speed = json['speed'],
     _flightTime = json['flightTime'],
     _passengerCapacity = json['passengerCapacity'],
     _cargoCapacity = json['cargoCapacity'],

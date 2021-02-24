@@ -1,7 +1,7 @@
 import 'package:pocketplanes2/model/job.dart';
 import 'package:pocketplanes2/model/map_object.dart';
 
-class Airport extends MapObject{
+class Airport extends MapObject {
   String _name;
   List<Job> _currentJobs = List<Job>();
   List<Job> _layovers = List<Job>();
@@ -41,16 +41,15 @@ class Airport extends MapObject{
     this._layoverCapacity += 3;
   }
 
-
   Map<String, dynamic> toJson() => {
-    'name': _name,
-    'layoverCapacity': _layoverCapacity,
-    'x': x,
-    'y': y
-  };
+        'name': _name,
+        'layoverCapacity': _layoverCapacity,
+        'x': x,
+        'y': y
+      };
 
   Airport.fromJson(Map<String, dynamic> json)
-   : _name = json['name'],
-   _layoverCapacity = json['layoverCapacity'],
-   super.positioned(json['x'], json['y']);
+      : _name = json['name'],
+        _layoverCapacity = json['layoverCapacity'],
+        super.positioned(json['x'], json['y']);
 }

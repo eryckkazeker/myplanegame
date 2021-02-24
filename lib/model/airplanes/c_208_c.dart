@@ -10,7 +10,8 @@ class C208C extends Airplane {
             range: AirplaneConstants.C208RANGE,
             cargoCapacity: AirplaneConstants.C208C_CARGO_CAPACITY,
             passengerCapacity: 0,
-            price: PricingConstants.C208_PRICE);
+            price: PricingConstants.C208_PRICE,
+            speed: SpeedConstants.C208_SPEED);
 
   @override
   String get modelName => this._modelName;

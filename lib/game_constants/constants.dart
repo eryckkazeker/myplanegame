@@ -18,3 +18,8 @@ class PricingConstants {
   static const int C208_PRICE=30000;
   static const int AIRPORT_UPGRADE_PRICE_CONSTANT=2000;
 }
+
+class SpeedConstants {
+  static const int C172_SPEED = 100;
+  static const int C208_SPEED = 150;
+}

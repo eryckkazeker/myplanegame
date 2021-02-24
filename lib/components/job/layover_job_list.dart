@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pocketplanes2/components/empty_list_space.dart';
 import 'package:pocketplanes2/components/job/job_widget.dart';
 import 'package:pocketplanes2/model/airport.dart';
 import 'package:pocketplanes2/model/job.dart';
@@ -19,10 +20,13 @@ class _LayoverJobListComponentState extends State<LayoverJobListComponent> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: widget._airport.layovers.length+1,
+        itemCount: widget._airport.layoverCapacity+1,
         itemBuilder: (context, index) {
-          return (index < widget._airport.layovers.length) ?
-            JobWidget(widget._airport.layovers[index], widget._clickCallBack) :
+          if(index < widget._airport.layovers.length) {
+            return JobWidget(widget._airport.layovers[index], widget._clickCallBack);
+          }
+          return (index < widget._airport.layoverCapacity) ?
+            EmptyListSpace() :
             AirportUpgradeListItem(widget._airport);
         });
   }

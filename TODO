@@ -13,15 +13,14 @@ Job generation
     Refresh airport jobs after some time
 
 Save / Load
-    Create splash screen for game loading
     Save layover jobs
-    Fix game being loaded when returning after back button is pressed
 
 Features to add
     Create airport unlocking / purchasing
     Create banking system
     Delete Layover Jobs
     Multi destination flight
+    Time passage with app closed
     
 
 

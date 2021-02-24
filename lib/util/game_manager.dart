@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pocketplanes2/enums/plane_status.dart';
 import 'package:pocketplanes2/model/airplane.dart';
 import 'package:pocketplanes2/model/airport.dart';
+import 'package:pocketplanes2/model/job.dart';
 import 'package:pocketplanes2/model/player.dart';
 import 'package:pocketplanes2/util/file_manager.dart';
 
@@ -45,7 +46,7 @@ class GameManager {
     this._currentAirplane = current;
   }
 
-  void saveGame() {
+  Future<void> saveGame() async {
     debugPrint('Saving game data');
 
     debugPrint('Saving player data');
@@ -56,15 +57,24 @@ class GameManager {
     var airplaneData = jsonEncode(airplanes.map((e) => e.toJson()).toList());
     debugPrint('Airplanes data [$airplaneData]');
 
+    Map<String, dynamic> layoverMap = Map<String, dynamic>();
+    debugPrint('Saving layover jobs');
+    airports.forEach((airport) {
+      layoverMap[airport.name] = airport.layovers.map((e) => e.toJson()).toList();
+    });
+
+    debugPrint('Layover job data[$layoverMap]');
+
     Map<String, dynamic> saveData = {
       'player': Player().toJson(),
       'airplanes': airplanes.map((e) => e.toJson()).toList(),
-      'airports': airports.map((e) => e.toJson()).toList()
+      'airports': airports.map((e) => e.toJson()).toList(),
+      'layovers': layoverMap
     };
 
     var saveDataJson = jsonEncode(saveData);
     debugPrint('Savedata: [$saveDataJson]');
-    FileManager.saveDataToFile(saveDataJson);
+    await FileManager.saveDataToFile(saveDataJson);
   }
 
   void loadGame() async {
@@ -92,10 +102,22 @@ class GameManager {
     debugPrint('loading airport data');
     var airportDataMap = gameDataMap['airports'];
     (airportDataMap as List).map((e) {
-      var airport = airports.singleWhere((element) => element.name == e['name']);
+      var airport = airports.firstWhere((element) => element.name == e['name']);
       airport.layoverCapacity = e['layoverCapacity'];
       return airport;
     }).toList();
+
+    debugPrint('loading layover jobs');
+    var layoverData = gameDataMap['layovers'];
+
+    var layoverDataMap = (layoverData as Map);
+
+    layoverDataMap.keys.forEach((key) {
+      var airport = airports.firstWhere((airport) => airport.name == key);
+      var jobList = (layoverDataMap[key] as List).map((job) => Job.fromJson(job)).toList();
+      airport.layovers.addAll(jobList);
+     });
+
     debugPrint('Done Loading');
   }
 }
