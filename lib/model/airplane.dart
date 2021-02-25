@@ -40,6 +40,19 @@ class Airplane extends MapObject {
     this._speed = speed;
   }
 
+  Airplane.clone(Airplane airplane) {
+    this._name = airplane.name;
+    this._currentAirport = airplane.currentAirport;
+    this.x = airplane.currentAirport?.x;
+    this.y = airplane.currentAirport?.y;
+    this._range = airplane.range;
+    this._passengerCapacity = airplane.passengerCapacity;
+    this._cargoCapacity = airplane.cargoCapacity;
+    this._price = airplane.price;
+    this._speed = airplane.speed;
+    this._modelName = airplane.modelName;
+  }
+
   String get modelName => this._modelName;
   String get name => this._name;
   double get range => this._range;

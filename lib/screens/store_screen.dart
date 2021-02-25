@@ -38,10 +38,13 @@ class _StoreScreenState extends State<StoreScreen> {
     }
 
     Player().pay(airplane.price);
-    airplane.currentAirport = airport;
-    airplane.name =
+
+    var newAirplane = Airplane.clone(airplane);
+
+    newAirplane.currentAirport = airport;
+    newAirplane.name =
         'PL${(gameManager.airplanes.length + 1).toString().padLeft(4, '0')}';
-    gameManager.addPlane(airplane);
+    gameManager.addPlane(newAirplane);
 
     setState(() {});
   }
