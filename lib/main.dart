@@ -1,25 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:pocketplanes2/screens/map_screen.dart';
-import 'package:pocketplanes2/util/game_generator.dart';
-import 'package:pocketplanes2/util/job_generator.dart';
+import 'package:pocketplanes2/screens/splash_screen.dart';
+import 'package:pocketplanes2/util/game_manager.dart';
+
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
 
-  MyApp() {
-    JobGenerator jobGenerator = JobGenerator();
-    GameGenerator.generateGame();
-    jobGenerator.generateJobs();
+  MyApp();
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
   }
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'My Pocket Planes',
+      title: 'Plane Game Attempt',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         // This makes the visual density adapt to the platform that you run
@@ -27,8 +34,21 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MapScreen()
+      home: SplashScreen()
     );
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      GameManager().saveGame();
+    }
   }
 }
 

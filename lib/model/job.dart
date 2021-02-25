@@ -1,5 +1,6 @@
 import 'package:pocketplanes2/enums/job_type.dart';
 import 'package:pocketplanes2/model/airport.dart';
+import 'package:pocketplanes2/util/game_manager.dart';
 
 class Job {
   JobType _type;
@@ -17,4 +18,17 @@ class Job {
   set origin(Airport airport) {
     this._origin = airport;
   }
+
+  Map<String, dynamic> toJson() => {
+    'jobType': _type.toString(),
+    'destination': _destination.name,
+    'origin': _origin.name,
+    'value': _value
+  };
+
+  Job.fromJson(Map<String,dynamic> json)
+    : _destination = GameManager().airports.firstWhere((airport) => airport.name == json['destination']),
+    _origin = GameManager().airports.firstWhere((airport) => airport.name == json['origin']),
+    _type = JobType.values.firstWhere((type) => type.toString() == json['jobType']),
+    _value = json['value'];
 }

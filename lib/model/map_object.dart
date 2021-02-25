@@ -5,6 +5,10 @@ class MapObject {
   double get x => this._x;
   double get y => this._y;
 
+  MapObject();
+
+  MapObject.positioned(this._x, this._y);
+
   set x(double newPosition) {
     this._x = newPosition;
   }

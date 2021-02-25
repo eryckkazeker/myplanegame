@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:pocketplanes2/model/airplane.dart';
 import 'package:pocketplanes2/model/airport.dart';
 import 'dart:math' as math;
 
@@ -13,5 +14,17 @@ class GeographyHelper {
 
     log('Distance between ${a1.name} and ${a2.name} is $totalDistance');
     return totalDistance;
+  }
+
+  static bool isInRange(Airport destination, Airplane airplane) {
+    if (distance(destination, airplane.currentAirport) > airplane.range) {
+      return false;
+    }
+    return true;
+  }
+
+  static double flightTimeFromDistance(Airplane airplane, Airport destination) {
+    var flightTimeInMinutes = distance(destination, airplane.currentAirport) / airplane.speed;
+    return flightTimeInMinutes * 60;
   }
 }

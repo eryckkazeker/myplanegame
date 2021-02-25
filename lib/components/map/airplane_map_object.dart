@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:pocketplanes2/enums/plane_status.dart';
@@ -7,8 +6,9 @@ import 'package:pocketplanes2/model/airplane.dart';
 
 class AirplaneMapObject extends StatefulWidget {
   final Airplane _airplane;
+  final Function _clickCallback;
 
-  AirplaneMapObject(this._airplane);
+  AirplaneMapObject(this._airplane, this._clickCallback);
 
   @override
   _AirplaneMapObjectState createState() => _AirplaneMapObjectState();
@@ -21,8 +21,6 @@ class _AirplaneMapObjectState extends State<AirplaneMapObject> {
   void initState() {
     super.initState();
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      //FIXME this should not be here
-      widget._airplane.move();
       setState(() {});
     });
   }
@@ -40,14 +38,13 @@ class _AirplaneMapObjectState extends State<AirplaneMapObject> {
         opacity: (widget._airplane.planeStatus == PlaneStatus.flying) ? 1 : 0,
         child: GestureDetector(
           onTap: () {
-            log('plane clicked');
-            //Navigator.push(context, MaterialPageRoute(builder: (context) => AirportScreen(widget._airport)));
+            widget._clickCallback(widget._airplane);
           },
           child: Column(
             children: [
               Text(
                 widget._airplane.name,
-                style: TextStyle(fontSize: 10, color: Colors.blue),
+                style: TextStyle(fontSize: 10, color: Colors.blue, backgroundColor: Colors.white),
               ),
               Icon(
                 Icons.flight_takeoff,
@@ -57,8 +54,8 @@ class _AirplaneMapObjectState extends State<AirplaneMapObject> {
           ),
         ),
       ),
-      left: widget._airplane.x,
-      top: widget._airplane.y,
+      left: widget._airplane.x-10,
+      top: widget._airplane.y-10,
     );
   }
 }

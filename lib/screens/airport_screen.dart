@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pocketplanes2/enums/job_type.dart';
 import 'package:pocketplanes2/model/airport.dart';
 import 'package:pocketplanes2/model/job.dart';
 
@@ -36,9 +37,9 @@ class JobListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(child: ListTile(
-      leading: Icon(Icons.person),
+      leading: (_job.type == JobType.passenger) ? Icon(Icons.person) : Icon(Icons.sensor_window),
       title: Text('To ${_job.destination.name}'),
-      subtitle: Text('${_job.value}'),
+      subtitle: Text('\$${_job.value}'),
     ));
   }
 

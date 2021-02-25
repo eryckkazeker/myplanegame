@@ -22,9 +22,9 @@ class _AirplaneListScreenState extends State<AirplaneListScreen> {
   void initState() {
     super.initState();
 
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) { setState(() {
-      
-    }); });
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {});
+    });
   }
 
   @override
@@ -35,16 +35,19 @@ class _AirplaneListScreenState extends State<AirplaneListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Airplane List'),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Airplane List'),
+        ),
+        body: ListView.builder(
+            itemCount: gameManager.airplanes.length,
+            itemBuilder: (context, index) {
+              return AirplaneListItem(gameManager.airplanes[index], update);
+            }),
+        bottomNavigationBar: PageFooter(),
       ),
-      body: ListView.builder(
-          itemCount: gameManager.airplanes.length,
-          itemBuilder: (context, index) {
-            return AirplaneListItem(gameManager.airplanes[index], update);
-          }),
-          bottomNavigationBar: PageFooter(),
     );
   }
 
@@ -63,25 +66,35 @@ class AirplaneListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if(_airplane.planeStatus == PlaneStatus.landed) {
-          Navigator.push(context,
-            MaterialPageRoute(builder: (context) => AirplaneScreen(_airplane)))
-            .then((value) => _updateCallback());
+        if (_airplane.planeStatus == PlaneStatus.landed) {
+          Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AirplaneScreen(_airplane)))
+              .then((value) => _updateCallback());
         }
       },
       child: Card(
         child: Container(
-          color: (_airplane.planeStatus == PlaneStatus.landed) ? Colors.green[100] : Colors.red[200],
+          color: (_airplane.planeStatus == PlaneStatus.landed)
+              ? Colors.green[100]
+              : Colors.red[200],
           child: Column(
             children: [
-              Icon(_airplane.planeStatus == PlaneStatus.landed ? Icons.flight_land : Icons.flight_takeoff),
-              Text('${_airplane.name}'),
-              Text(_airplane.planeStatus == PlaneStatus.landed ? 'At ${_airplane.currentAirport.name}' :
-              'Flying to ${_airplane.destination.name}'),
+              Icon(_airplane.planeStatus == PlaneStatus.landed
+                  ? Icons.flight_land
+                  : Icons.flight_takeoff),
+              Text('${_airplane.name} / ${_airplane.modelName}'),
+              Text(_airplane.planeStatus == PlaneStatus.landed
+                  ? 'At ${_airplane.currentAirport.name}'
+                  : 'Flying to ${_airplane.destination.name}'),
               Text(
                   'Passengers: ${_airplane.passengerJobs.length} / ${_airplane.passengerCapacity}'),
               Text(
-                  'Cargo: ${_airplane.cargoJobs.length} / ${_airplane.cargoCapacity}')
+                  'Cargo: ${_airplane.cargoJobs.length} / ${_airplane.cargoCapacity}'),
+              Text((_airplane.planeStatus == PlaneStatus.flying)
+                  ? 'Arrives in ${_airplane.flightTime.toInt()}s'
+                  : '')
             ],
           ),
         ),
