@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:pocketplanes2/util/game_manager.dart';
 
+//TODO rename to FlightPlanPainter
 class PlaneRangePainter extends CustomPainter {
   final gameManager = GameManager();
 
@@ -25,17 +26,32 @@ class PlaneRangePainter extends CustomPainter {
     paint.strokeWidth = 2.0;
     paint.style = PaintingStyle.stroke;
 
-    var position = Offset(
+    var initialPosition = Offset(
         gameManager.currentAirplane.x+10, gameManager.currentAirplane.y+10);
+
+    var position = initialPosition;
+
+    if(gameManager.currentAirplane.destinationList.length > 0) {
+      var positionIndex = gameManager.currentAirplane.destinationList.length-1;
+      position = Offset(
+        gameManager.currentAirplane.destinationList[positionIndex].x+10, 
+        gameManager.currentAirplane.destinationList[positionIndex].y+10);
+    }
+
     var radius = gameManager.currentAirplane.range;
 
     canvas.drawCircle(position, radius, paint);
 
-    if (gameManager.currentAirplane.destination != null) {
-      var destinationPosition = Offset(
-          gameManager.currentAirplane.destination.x+10,
-          gameManager.currentAirplane.destination.y+10);
+    position = initialPosition;
+    
+    if (gameManager.currentAirplane.destinationList != null) {
+      gameManager.currentAirplane.destinationList.forEach((destination) {
+        var destinationPosition = Offset(
+          destination.x+10,
+          destination.y+10);
       canvas.drawLine(position, destinationPosition, paint);
+      position = destinationPosition;
+      });
     }
   }
 

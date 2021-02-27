@@ -16,8 +16,8 @@ class GeographyHelper {
     return totalDistance;
   }
 
-  static bool isInRange(Airport destination, Airplane airplane) {
-    if (distance(destination, airplane.currentAirport) > airplane.range) {
+  static bool isInRange(Airport destination, Airport current, Airplane airplane) {
+    if (distance(destination, current) > airplane.range) {
       return false;
     }
     return true;

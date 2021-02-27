@@ -87,7 +87,7 @@ class AirplaneListItem extends StatelessWidget {
               Text('${_airplane.name} / ${_airplane.modelName}'),
               Text(_airplane.planeStatus == PlaneStatus.landed
                   ? 'At ${_airplane.currentAirport.name}'
-                  : 'Flying to ${_airplane.destination.name}'),
+                  : 'Flying to ${_airplane.destinationList[0]?.name}'),
               Text(
                   'Passengers: ${_airplane.passengerJobs.length} / ${_airplane.passengerCapacity}'),
               Text(
