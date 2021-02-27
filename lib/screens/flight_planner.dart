@@ -22,7 +22,7 @@ class _FlightPlannerScreenState extends State<FlightPlannerScreen> {
 
   @override
   void initState() {
-    widget._airplane.destination = null;
+    widget._airplane.destinationList = List<Airport>();
     widget.gameManager.currentAirplane = widget._airplane;
     super.initState();
   }
@@ -58,7 +58,8 @@ class _FlightPlannerScreenState extends State<FlightPlannerScreen> {
                   width: double.infinity,
                   child: RaisedButton(
                     onPressed: () {
-                      if (widget._airplane.fly()) {
+                      if (widget._airplane.canFly()) {
+                        widget._airplane.fly();
                         //TODO change to method that pops other containers
                         Navigator.pop(context);
                         Navigator.pop(context);
@@ -86,15 +87,20 @@ class _FlightPlannerScreenState extends State<FlightPlannerScreen> {
 
   void selectDestination(BuildContext context, Airport airport) {
     log('selected destination ${airport.name}');
-    if (airport == widget._airplane.currentAirport) {
+    var lastAirport = (widget._airplane.destinationList.length == 0) ?
+      widget._airplane.currentAirport :
+      widget._airplane.destinationList.last;
+      
+    if (airport == lastAirport) {
+      widget._airplane.destinationList.removeLast();
       return;
     }
 
-    if(!GeographyHelper.isInRange(airport, widget._airplane)) {
+    if(!GeographyHelper.isInRange(airport, lastAirport, widget._airplane)) {
       return;
     }
 
-    widget._airplane.destination = airport;
+    widget._airplane.destinationList.add(airport);
 
     setState(() {
       

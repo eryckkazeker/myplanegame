@@ -33,4 +33,9 @@ class FileManager {
 
     return await file.readAsString();
   }
+
+  static Future<void> deleteSaveFile() async {
+    var file = await _getSaveDataFile();
+    file.delete();
+  }
 }

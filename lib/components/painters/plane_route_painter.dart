@@ -13,7 +13,7 @@ class PlaneRoutePainter extends CustomPainter {
         final p1 = Offset(
             airplane.currentAirport.x + 10, airplane.currentAirport.y + 10);
         final p2 =
-            Offset(airplane.destination.x + 10, airplane.destination.y + 10);
+            Offset(airplane.destinationList[0].x + 10, airplane.destinationList[0].y + 10);
         final paint = Paint();
         paint.color = Colors.black;
         paint.strokeWidth = 2.0;

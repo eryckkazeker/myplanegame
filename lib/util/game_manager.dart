@@ -53,10 +53,6 @@ class GameManager {
     var playerData = jsonEncode(Player().toJson());
     debugPrint('Player data [$playerData]');
 
-    debugPrint('Saving airplanes');
-    var airplaneData = jsonEncode(airplanes.map((e) => e.toJson()).toList());
-    debugPrint('Airplanes data [$airplaneData]');
-
     Map<String, dynamic> layoverMap = Map<String, dynamic>();
     debugPrint('Saving layover jobs');
     airports.forEach((airport) {

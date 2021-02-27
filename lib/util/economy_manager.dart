@@ -5,8 +5,14 @@ import 'package:pocketplanes2/util/game_manager.dart';
 import 'package:pocketplanes2/util/geography_helper.dart';
 
 class EconomyManager {
-  static int tripCost(Airplane airplane, Airport destination) {
-    double flightDistance = GeographyHelper.distance(airplane.currentAirport, destination);
+  //TODO total distance should come from geography helper
+  static int tripCost(Airplane airplane, List<Airport> destinationList) {
+    Airport startPoint = airplane.currentAirport;
+    double flightDistance = 0;
+    destinationList.forEach((destination) {
+      flightDistance += GeographyHelper.distance(startPoint, destination);
+      startPoint = destination;
+    });
     return flightDistance.toInt() * GameManager.FUEL_COST;
   }
 
