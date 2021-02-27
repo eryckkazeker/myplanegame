@@ -5,6 +5,7 @@ import 'package:pocketplanes2/components/map_component.dart';
 import 'package:pocketplanes2/components/page_footer.dart';
 import 'package:pocketplanes2/model/airport.dart';
 import 'package:pocketplanes2/screens/airport_screen.dart';
+import 'package:pocketplanes2/util/game_manager.dart';
 
 class MapScreen extends StatefulWidget {
   @override
@@ -28,7 +29,18 @@ class _MapScreenState extends State<MapScreen> {
     return WillPopScope(
       onWillPop: () async => false,
           child: Scaffold(
-        appBar: AppBar(title: Text('World Map')),
+        appBar: AppBar(title: Text('World Map'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: GestureDetector(
+              onTap: () {
+                GameManager().saveGame();
+              },
+              child: Icon(Icons.save),
+            ),
+          )
+        ],),
         body: MapComponent(navigateToAirportScreen),
         bottomNavigationBar: PageFooter(),
       ),

@@ -21,6 +21,17 @@ class _StoreScreenState extends State<StoreScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Store'),
+          actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: GestureDetector(
+              onTap: () {
+                GameManager().saveGame();
+              },
+              child: Icon(Icons.save),
+            ),
+          )
+        ],
         ),
         body: ListView.builder(
             itemCount: gameManager.store.length,

@@ -40,6 +40,17 @@ class _AirplaneListScreenState extends State<AirplaneListScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Airplane List'),
+          actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: GestureDetector(
+              onTap: () {
+                GameManager().saveGame();
+              },
+              child: Icon(Icons.save),
+            ),
+          )
+        ],
         ),
         body: ListView.builder(
             itemCount: gameManager.airplanes.length,

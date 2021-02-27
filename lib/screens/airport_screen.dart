@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pocketplanes2/enums/job_type.dart';
 import 'package:pocketplanes2/model/airport.dart';
 import 'package:pocketplanes2/model/job.dart';
+import 'package:pocketplanes2/util/game_manager.dart';
 
 class AirportScreen extends StatefulWidget {
   final Airport _airport;
@@ -18,6 +19,17 @@ class _AirportScreenState extends State<AirportScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget._airport.name),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: GestureDetector(
+              onTap: () {
+                GameManager().saveGame();
+              },
+              child: Icon(Icons.save),
+            ),
+          )
+        ],
       ),
       body:  ListView.builder(
         itemCount: widget._airport.currentJobs.length,

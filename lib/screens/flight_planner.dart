@@ -32,6 +32,17 @@ class _FlightPlannerScreenState extends State<FlightPlannerScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Flight Plan'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: GestureDetector(
+              onTap: () {
+                GameManager().saveGame();
+              },
+              child: Icon(Icons.save),
+            ),
+          )
+        ],
       ),
       body: Column(
         mainAxisSize: MainAxisSize.min,
