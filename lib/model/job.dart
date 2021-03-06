@@ -1,12 +1,14 @@
+import 'package:flutter/material.dart';
 import 'package:pocketplanes2/enums/job_type.dart';
 import 'package:pocketplanes2/model/airport.dart';
 import 'package:pocketplanes2/util/game_manager.dart';
 
-class Job {
+class Job with ChangeNotifier{
   JobType _type;
   Airport _destination;
   Airport _origin;
   int _value;
+  bool _deleted = false;
 
   Job(this._destination, this._type, this._value);
 
@@ -17,6 +19,11 @@ class Job {
 
   set origin(Airport airport) {
     this._origin = airport;
+  }
+
+  void delete() {
+    this._deleted = true;
+    notifyListeners();
   }
 
   Map<String, dynamic> toJson() => {

@@ -25,6 +25,6 @@ class GeographyHelper {
 
   static double flightTimeFromDistance(Airplane airplane, Airport destination) {
     var flightTimeInMinutes = distance(destination, airplane.currentAirport) / airplane.speed;
-    return flightTimeInMinutes * 60;
+    return flightTimeInMinutes * 60 * 15;
   }
 }

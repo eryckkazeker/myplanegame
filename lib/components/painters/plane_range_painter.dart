@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:pocketplanes2/game_constants/constants.dart';
 
 import 'package:pocketplanes2/util/game_manager.dart';
 
@@ -23,19 +24,19 @@ class PlaneRangePainter extends CustomPainter {
 
     final paint = Paint();
     paint.color = Colors.green[800];
-    paint.strokeWidth = 2.0;
+    paint.strokeWidth = PainterConstants.RANGE_STROKE_WIDTH;
     paint.style = PaintingStyle.stroke;
 
     var initialPosition = Offset(
-        gameManager.currentAirplane.x+10, gameManager.currentAirplane.y+10);
+        gameManager.currentAirplane.x+PainterConstants.ICON_OFFSET, gameManager.currentAirplane.y+PainterConstants.ICON_OFFSET);
 
     var position = initialPosition;
 
     if(gameManager.currentAirplane.destinationList.length > 0) {
       var positionIndex = gameManager.currentAirplane.destinationList.length-1;
       position = Offset(
-        gameManager.currentAirplane.destinationList[positionIndex].x+10, 
-        gameManager.currentAirplane.destinationList[positionIndex].y+10);
+        gameManager.currentAirplane.destinationList[positionIndex].x+PainterConstants.ICON_OFFSET, 
+        gameManager.currentAirplane.destinationList[positionIndex].y+PainterConstants.ICON_OFFSET);
     }
 
     var radius = gameManager.currentAirplane.range;
@@ -47,8 +48,8 @@ class PlaneRangePainter extends CustomPainter {
     if (gameManager.currentAirplane.destinationList != null) {
       gameManager.currentAirplane.destinationList.forEach((destination) {
         var destinationPosition = Offset(
-          destination.x+10,
-          destination.y+10);
+          destination.x+PainterConstants.DESTINATION_OFFSET,
+          destination.y+PainterConstants.DESTINATION_OFFSET);
       canvas.drawLine(position, destinationPosition, paint);
       position = destinationPosition;
       });

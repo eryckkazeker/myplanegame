@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pocketplanes2/components/empty_list_space.dart';
-import 'package:pocketplanes2/components/job/job_widget.dart';
+import 'package:pocketplanes2/components/job/layover_job_widget.dart';
 import 'package:pocketplanes2/model/airport.dart';
 import 'package:pocketplanes2/model/job.dart';
 import 'package:pocketplanes2/model/player.dart';
@@ -23,7 +23,7 @@ class _LayoverJobListComponentState extends State<LayoverJobListComponent> {
         itemCount: widget._airport.layoverCapacity+1,
         itemBuilder: (context, index) {
           if(index < widget._airport.layovers.length) {
-            return JobWidget(widget._airport.layovers[index], widget._clickCallBack);
+            return LayoverJobWidget(widget._airport.layovers[index], widget._clickCallBack);
           }
           return (index < widget._airport.layoverCapacity) ?
             EmptyListSpace() :
@@ -40,7 +40,7 @@ class AirportUpgradeListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: RaisedButton(
+      child: ElevatedButton(
         child: Icon(Icons.add),
         onPressed: (Player().balance < EconomyManager.layoverUpgradePrice(_airport)) ?
         null :
