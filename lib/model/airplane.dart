@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:pocketplanes2/enums/job_type.dart';
 import 'package:pocketplanes2/enums/plane_status.dart';
@@ -18,10 +19,10 @@ class Airplane extends MapObject {
   int _cargoCapacity;
   int _passengerCapacity;
   int _speed;
-  List<Job> _cargoJobs = List<Job>();
-  List<Job> _passengerJobs = List<Job>();
+  List<Job> _cargoJobs = List.empty(growable: true);
+  List<Job> _passengerJobs = List.empty(growable: true);
   Airport _currentAirport;
-  List<Airport> _destinationList = List<Airport>();
+  List<Airport> _destinationList = List.empty(growable: true);
   PlaneStatus _planeStatus = PlaneStatus.landed;
   Player _player = Player();
   double _flightTime;
@@ -42,7 +43,7 @@ class Airplane extends MapObject {
     this._cargoCapacity = cargoCapacity;
     this._price = price;
     this._speed = speed;
-    this._destinationList = List<Airport>();
+    this._destinationList = List.empty(growable: true);
   }
 
   Airplane.clone(Airplane airplane) {
@@ -202,6 +203,25 @@ class Airplane extends MapObject {
     if (y < destinationList[0].y) y += (yDistance) / flightTime;
 
     flightTime--;
+  }
+
+  double angleToDestination() {
+
+    if(destinationList.isEmpty) {
+      return 0;
+    }
+
+    var xDistance = (destinationList[0].x - x);
+    var yDistance = -(destinationList[0].y - y);
+
+    var inRads = math.atan2(yDistance, xDistance);
+
+    if (inRads < 0)
+        inRads = inRads.abs();
+    else
+        inRads = 2 * math.pi- inRads;
+
+    return inRads + (math.pi/2);
   }
 
   Map<String, dynamic> toJson() => {

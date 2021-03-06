@@ -5,6 +5,7 @@ class Player {
 
   List<Airport> _ownedAirports;
   int _balance;
+  int _nextTripProfit = 0;
 
   factory Player() {
     return _player;
@@ -14,6 +15,7 @@ class Player {
 
   List<Airport> get ownedAirports => this._ownedAirports;
   int get balance => this._balance;
+  int get nextTripProfit => this._nextTripProfit;
 
   void ownAirport(Airport airport) {
     this._ownedAirports.add(airport);
@@ -21,6 +23,10 @@ class Player {
 
   set balance(int value) {
     this._balance = value;
+  }
+
+  set nextTripProfit(int profit) {
+    this._nextTripProfit = profit;
   }
 
   void addBalance(int value) {

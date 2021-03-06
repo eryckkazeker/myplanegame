@@ -87,7 +87,7 @@ class _StoreAirplaneItemState extends State<StoreAirplaneItem> {
           )),
           Expanded(child: Text('\$ ${widget._airplane.price}')),
           Expanded(
-            child: RaisedButton(
+            child: ElevatedButton(
                 child: Text('BUY'),
                 onPressed: (Player().balance < widget._airplane.price)
                     ? null

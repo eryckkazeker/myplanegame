@@ -5,6 +5,8 @@ import 'package:pocketplanes2/components/flight_planner_map.dart';
 import 'package:pocketplanes2/components/page_footer.dart';
 import 'package:pocketplanes2/model/airplane.dart';
 import 'package:pocketplanes2/model/airport.dart';
+import 'package:pocketplanes2/model/player.dart';
+import 'package:pocketplanes2/util/economy_manager.dart';
 import 'package:pocketplanes2/util/game_manager.dart';
 import 'package:pocketplanes2/util/geography_helper.dart';
 
@@ -22,7 +24,7 @@ class _FlightPlannerScreenState extends State<FlightPlannerScreen> {
 
   @override
   void initState() {
-    widget._airplane.destinationList = List<Airport>();
+    widget._airplane.destinationList = List.empty(growable: true);
     widget.gameManager.currentAirplane = widget._airplane;
     super.initState();
   }
@@ -67,7 +69,7 @@ class _FlightPlannerScreenState extends State<FlightPlannerScreen> {
                 padding: const EdgeInsets.only(right: 16.0, left: 16.0),
                 child: SizedBox(
                   width: double.infinity,
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () {
                       if (widget._airplane.canFly()) {
                         widget._airplane.fly();
@@ -92,6 +94,7 @@ class _FlightPlannerScreenState extends State<FlightPlannerScreen> {
 
   @override
   void dispose() {
+    Player().nextTripProfit = 0;
     widget.gameManager.currentAirplane = null;
     super.dispose();
   }
@@ -102,8 +105,16 @@ class _FlightPlannerScreenState extends State<FlightPlannerScreen> {
       widget._airplane.currentAirport :
       widget._airplane.destinationList.last;
       
+
+    if(airport.locked) {
+      return;
+    }
+      
     if (airport == lastAirport) {
       widget._airplane.destinationList.removeLast();
+      setState(() {
+        Player().nextTripProfit = EconomyManager.nextTripProfit(widget._airplane);
+      });
       return;
     }
 
@@ -112,6 +123,8 @@ class _FlightPlannerScreenState extends State<FlightPlannerScreen> {
     }
 
     widget._airplane.destinationList.add(airport);
+
+    Player().nextTripProfit = EconomyManager.nextTripProfit(widget._airplane);
 
     setState(() {
       

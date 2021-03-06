@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:pocketplanes2/enums/plane_status.dart';
+import 'package:pocketplanes2/game_constants/constants.dart';
 import 'package:pocketplanes2/model/airplane.dart';
 
 class AirplaneMapObject extends StatefulWidget {
@@ -44,18 +45,21 @@ class _AirplaneMapObjectState extends State<AirplaneMapObject> {
             children: [
               Text(
                 widget._airplane.name,
-                style: TextStyle(fontSize: 10, color: Colors.blue, backgroundColor: Colors.white),
+                style: TextStyle(fontSize: 1, color: Colors.blue, backgroundColor: Colors.white),
               ),
-              Icon(
-                Icons.flight_takeoff,
-                size: 15,
+              Transform.rotate(
+                angle: widget._airplane.angleToDestination(),
+                              child: Icon(
+                  Icons.airplanemode_active,
+                  size: 3,
+                ),
               )
             ],
           ),
         ),
       ),
-      left: widget._airplane.x-10,
-      top: widget._airplane.y-10,
+      left: widget._airplane.x-PainterConstants.PLANE_OFFSET,
+      top: widget._airplane.y-PainterConstants.PLANE_OFFSET,
     );
   }
 }

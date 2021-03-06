@@ -5,7 +5,7 @@ import 'package:path_provider/path_provider.dart';
 
 class FileManager {
   static Future<String> _localPath() async {
-    var directory = await getApplicationDocumentsDirectory();
+    var directory = await getExternalStorageDirectory();
     return directory.path;
   }
 

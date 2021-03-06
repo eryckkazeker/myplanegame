@@ -18,8 +18,8 @@ class FlightPlannerMap extends StatefulWidget {
 
 class _FlightPlannerMapState extends State<FlightPlannerMap> {
   final GameManager _manager = GameManager();
-  final Matrix4 _defaultPosition = Matrix4(0.8, 0.0, 0.0, 0.0, 0.0, 0.8, 0.0,
-      0.0, 0.0, 0.0, 0.8, 0.0, -1622, -2026, 0.0, 1.0);
+  final Matrix4 _defaultPosition = Matrix4(2.7, 0.0, 0.0, 0.0, 0.0, 2.7, 0.0,
+      0.0, 0.0, 0.0, 2.7, 0.0, -760, -973, 0.0, 1.0);
   final _transformationController = TransformationController();
 
   double rangeTick = 0.0;
@@ -31,7 +31,7 @@ class _FlightPlannerMapState extends State<FlightPlannerMap> {
       Container(
         child: Image.asset(
           'assets/world_map.png',
-          scale: 0.5,
+          scale: 3.0,
         ),
       ),
     ],
@@ -77,6 +77,8 @@ class _FlightPlannerMapState extends State<FlightPlannerMap> {
     return Center(
         child: InteractiveViewer(
       constrained: false,
+      minScale: 1.0,
+      maxScale: 10.0,
       child: _gameObjectsStack,
       transformationController: _transformationController,
     ));

@@ -2,25 +2,21 @@ Airlplane list
     Sort airplane_list by planeStatus
 
 Map screen
-    There's still room for improvement
+    Add the rest of the airports
 
 Flight planner
 
 Airplane screen
     Order job list by destination
+    Plane renaming
 
 Job generation
     Refresh airport jobs after some time
 
 Save / Load
-    Save layover jobs
 
 Features to add
-    Create airport unlocking / purchasing
     Create banking system
-    Delete Layover Jobs
-    Multi destination flight
     Time passage with app closed
-    
 
 

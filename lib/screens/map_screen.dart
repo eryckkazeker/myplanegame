@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:pocketplanes2/components/map_component.dart';
 import 'package:pocketplanes2/components/page_footer.dart';
 import 'package:pocketplanes2/model/airport.dart';
+import 'package:pocketplanes2/model/player.dart';
 import 'package:pocketplanes2/screens/airport_screen.dart';
+import 'package:pocketplanes2/util/economy_manager.dart';
 import 'package:pocketplanes2/util/game_manager.dart';
+import 'package:pocketplanes2/util/job_generator.dart';
 
 class MapScreen extends StatefulWidget {
   @override
@@ -41,7 +44,7 @@ class _MapScreenState extends State<MapScreen> {
             ),
           )
         ],),
-        body: MapComponent(navigateToAirportScreen),
+        body: MapComponent(airportSelected),
         bottomNavigationBar: PageFooter(),
       ),
     );
@@ -51,6 +54,41 @@ class _MapScreenState extends State<MapScreen> {
   void dispose() {
     _timer.cancel();
     super.dispose();
+  }
+
+  void airportSelected(BuildContext context, Airport airport) {
+    if(!airport.locked) {
+      navigateToAirportScreen(context, airport);
+    } else {
+      if(Player().balance < EconomyManager.airportPrice()) {
+        showDialog(context: context, builder: (context) => AlertDialog(
+        content: Text('The price to unlock is \$${EconomyManager.airportPrice()}'),
+        actions: [
+          TextButton(onPressed: () {Navigator.pop(context);}, child: Text('OK')),
+        ],
+      ));
+      } else {
+        showDialog(context: context, builder: (context) => AlertDialog(
+        content: Text('Unlock ${airport.name} for \$ ${EconomyManager.airportPrice()}?'),
+        actions: [
+          TextButton(onPressed: () {Navigator.pop(context, true);}, child: Text('YES')),
+          TextButton(onPressed: () {Navigator.pop(context, false);}, child: Text('NO'))
+        ],
+      ))
+      .then((buyAirport) {
+        if (buyAirport) {
+          Player().pay(EconomyManager.airportPrice());
+          airport.unlock();
+          GameManager().unlockedAirports.add(airport);
+          JobGenerator.generateJobsForAirport(airport);
+          setState(() {
+            
+          });
+        }
+      });
+      }
+      
+    }
   }
 
   void navigateToAirportScreen(BuildContext context, Airport airport) {

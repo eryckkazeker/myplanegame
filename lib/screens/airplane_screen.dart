@@ -113,7 +113,7 @@ class _AirplaneScreenState extends State<AirplaneScreen> {
             padding: const EdgeInsets.only(left: 16.0, right: 16.0),
             child: SizedBox(
               width: double.infinity,
-              child: RaisedButton(
+              child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                       context,
