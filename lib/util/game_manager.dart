@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:pocketplanes2/enums/plane_status.dart';
@@ -16,9 +17,11 @@ class GameManager {
 
   GameManager._internal();
 
-  List<Airport> _airports = List<Airport>();
-  List<Airplane> _airplanes = List<Airplane>();
-  List<Airplane> _store = List<Airplane>();
+  List<Airport> _airports = List.empty(growable: true);
+  List<Airport> _unlockedAirports = List.empty(growable: true);
+  List<Airplane> _airplanes = List.empty(growable: true);
+  List<Airplane> _store = List.empty(growable: true);
+  Matrix4 _lastMapPosition;
 
   Airplane _currentAirplane;
 
@@ -31,7 +34,8 @@ class GameManager {
   List<Airport> get airports => this._airports;
   List<Airplane> get airplanes => this._airplanes;
   List<Airplane> get store => this._store;
-
+  List<Airport> get unlockedAirports => this._unlockedAirports;
+  Matrix4 get lastMapPosition => this._lastMapPosition;
   Airplane get currentAirplane => this._currentAirplane;
 
   void addAirport(Airport airport) {
@@ -46,16 +50,20 @@ class GameManager {
     this._currentAirplane = current;
   }
 
+  set unlockedAirports(List<Airport> unlockedAirportsList) {
+    this._unlockedAirports = unlockedAirportsList;
+  }
+
+  set lastMapPosition(Matrix4 position) {
+    this._lastMapPosition = position;
+  }
+
   Future<void> saveGame() async {
     debugPrint('Saving game data');
 
     debugPrint('Saving player data');
     var playerData = jsonEncode(Player().toJson());
     debugPrint('Player data [$playerData]');
-
-    debugPrint('Saving airplanes');
-    var airplaneData = jsonEncode(airplanes.map((e) => e.toJson()).toList());
-    debugPrint('Airplanes data [$airplaneData]');
 
     Map<String, dynamic> layoverMap = Map<String, dynamic>();
     debugPrint('Saving layover jobs');
@@ -69,7 +77,8 @@ class GameManager {
       'player': Player().toJson(),
       'airplanes': airplanes.map((e) => e.toJson()).toList(),
       'airports': airports.map((e) => e.toJson()).toList(),
-      'layovers': layoverMap
+      'layovers': layoverMap,
+      'position': _lastMapPosition.storage
     };
 
     var saveDataJson = jsonEncode(saveData);
@@ -77,7 +86,7 @@ class GameManager {
     await FileManager.saveDataToFile(saveDataJson);
   }
 
-  void loadGame() async {
+  Future<void> loadGame() async {
     debugPrint('Loading game');
     var gameData = await FileManager.readSaveFile();
     debugPrint('loaded data: [$gameData]');
@@ -85,6 +94,7 @@ class GameManager {
 
     debugPrint('loading Player Data');
     Player().balance = gameDataMap['player']['balance'];
+    Player().nextTripProfit = 0;
     debugPrint('Player balance [${Player().balance}]');
     
     debugPrint('loading airplanes');
@@ -104,6 +114,7 @@ class GameManager {
     (airportDataMap as List).map((e) {
       var airport = airports.firstWhere((element) => element.name == e['name']);
       airport.layoverCapacity = e['layoverCapacity'];
+      airport.locked = e['locked'];
       return airport;
     }).toList();
 
@@ -115,8 +126,19 @@ class GameManager {
     layoverDataMap.keys.forEach((key) {
       var airport = airports.firstWhere((airport) => airport.name == key);
       var jobList = (layoverDataMap[key] as List).map((job) => Job.fromJson(job)).toList();
-      airport.layovers.addAll(jobList);
+      
+      jobList.forEach((element) {
+        airport.addLayoverJob(element);
+      });
      });
+
+     unlockedAirports = airports.where((airport) => airport.locked == false).toList();
+
+     debugPrint('Loading map position');
+
+     var positionList = (gameDataMap['position'] as List).map((e) => double.parse(e.toString())).toList();
+     
+     _lastMapPosition = Matrix4.fromFloat64List(Float64List.fromList(positionList));
 
     debugPrint('Done Loading');
   }

@@ -18,8 +18,8 @@ class MapComponent extends StatefulWidget {
 
 class _MapComponentState extends State<MapComponent> {
   final GameManager _manager = GameManager();
-  final Matrix4 _defaultPosition = Matrix4(0.8, 0.0, 0.0, 0.0, 0.0, 0.8, 0.0,
-      0.0, 0.0, 0.0, 0.8, 0.0, -1622, -2026, 0.0, 1.0);
+  final Matrix4 _defaultPosition = Matrix4(2.7, 0.0, 0.0, 0.0, 0.0, 2.7, 0.0,
+      0.0, 0.0, 0.0, 2.7, 0.0, -760, -973, 0.0, 1.0);
   final _transformationController = TransformationController();
 
   Timer _timer;
@@ -29,7 +29,7 @@ class _MapComponentState extends State<MapComponent> {
       Container(
         child: Image.asset(
           'assets/world_map.png',
-          scale: 0.5,
+          scale: 3.0,
         ),
       ),
       Positioned.fill(
@@ -49,15 +49,17 @@ class _MapComponentState extends State<MapComponent> {
   void initState() {
     super.initState();
 
-    _manager.airplanes.forEach((airplane) {
-      _gameObjectsStack.children.add(AirplaneMapObject(airplane, null));
-    });
+    _transformationController.value = (_manager.lastMapPosition == null) ?
+      _defaultPosition :
+      _manager.lastMapPosition;
 
     _manager.airports.forEach((airport) {
       _gameObjectsStack.children.add(AirportMapObject(airport, widget._mapClickCallback));
     });
 
-    _transformationController.value = _defaultPosition;
+    _manager.airplanes.forEach((airplane) {
+      _gameObjectsStack.children.add(AirplaneMapObject(airplane, null));
+    });
 
     setState(() {});
 
@@ -70,8 +72,13 @@ class _MapComponentState extends State<MapComponent> {
   Widget build(BuildContext context) {
     return Center(
         child: InteractiveViewer(
+          onInteractionEnd: (details) {
+            _manager.lastMapPosition = _transformationController.value;
+          },
       constrained: false,
       child: _gameObjectsStack,
+      minScale: 1.0,
+      maxScale: 20.0,
       transformationController: _transformationController,
     ));
   }

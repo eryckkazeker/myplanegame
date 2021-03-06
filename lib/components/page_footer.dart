@@ -17,7 +17,7 @@ class PageFooter extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Expanded(
-                  child: RaisedButton(
+                  child: ElevatedButton(
                 onPressed: () {
                   Navigator.pushAndRemoveUntil(context,
                       MaterialPageRoute(builder: (context) => MapScreen()),
@@ -26,7 +26,7 @@ class PageFooter extends StatelessWidget {
                 child: Text('Map'),
               )),
               Expanded(
-                  child: RaisedButton(
+                  child: ElevatedButton(
                 onPressed: () {
                   Navigator.pushAndRemoveUntil(context,
                       MaterialPageRoute(builder: (context) => AirplaneListScreen()),
@@ -35,7 +35,7 @@ class PageFooter extends StatelessWidget {
                 child: Text('Planes'),
               )),
               Expanded(
-                  child: RaisedButton(
+                  child: ElevatedButton(
                 onPressed: () {
                   Navigator.pushAndRemoveUntil(context,
                       MaterialPageRoute(builder: (context) => StoreScreen()),
@@ -45,7 +45,15 @@ class PageFooter extends StatelessWidget {
               ))
             ],
           ),
-          Text('Balance: \$ ${player.balance}', textAlign: TextAlign.center),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Balance: \$ ${player.balance}', textAlign: TextAlign.center),
+              Text((player.nextTripProfit > 0) ? ' + \$${player.nextTripProfit}' : '', style: TextStyle(color: Colors.green)),
+              Text((player.nextTripProfit < 0) ? ' - \$${player.nextTripProfit.abs()}' : '', style: TextStyle(color: Colors.red))
+            ],
+          ),
+          
         ],
       ),
     );

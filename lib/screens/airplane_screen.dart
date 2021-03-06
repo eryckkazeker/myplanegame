@@ -9,6 +9,7 @@ import 'package:pocketplanes2/components/page_footer.dart';
 import 'package:pocketplanes2/model/airplane.dart';
 import 'package:pocketplanes2/model/job.dart';
 import 'package:pocketplanes2/screens/flight_planner.dart';
+import 'package:pocketplanes2/util/game_manager.dart';
 
 class AirplaneScreen extends StatefulWidget {
   final Airplane _airplane;
@@ -35,6 +36,17 @@ class _AirplaneScreenState extends State<AirplaneScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget._airplane.name} / ${widget._airplane.modelName}'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: GestureDetector(
+              onTap: () {
+                GameManager().saveGame();
+              },
+              child: Icon(Icons.save),
+            ),
+          )
+        ],
       ),
       body: Column(
         mainAxisSize: MainAxisSize.min,
@@ -101,7 +113,7 @@ class _AirplaneScreenState extends State<AirplaneScreen> {
             padding: const EdgeInsets.only(left: 16.0, right: 16.0),
             child: SizedBox(
               width: double.infinity,
-              child: RaisedButton(
+              child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                       context,

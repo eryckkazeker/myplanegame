@@ -5,6 +5,8 @@ import 'package:pocketplanes2/components/flight_planner_map.dart';
 import 'package:pocketplanes2/components/page_footer.dart';
 import 'package:pocketplanes2/model/airplane.dart';
 import 'package:pocketplanes2/model/airport.dart';
+import 'package:pocketplanes2/model/player.dart';
+import 'package:pocketplanes2/util/economy_manager.dart';
 import 'package:pocketplanes2/util/game_manager.dart';
 import 'package:pocketplanes2/util/geography_helper.dart';
 
@@ -22,7 +24,7 @@ class _FlightPlannerScreenState extends State<FlightPlannerScreen> {
 
   @override
   void initState() {
-    widget._airplane.destination = null;
+    widget._airplane.destinationList = List.empty(growable: true);
     widget.gameManager.currentAirplane = widget._airplane;
     super.initState();
   }
@@ -32,6 +34,17 @@ class _FlightPlannerScreenState extends State<FlightPlannerScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Flight Plan'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: GestureDetector(
+              onTap: () {
+                GameManager().saveGame();
+              },
+              child: Icon(Icons.save),
+            ),
+          )
+        ],
       ),
       body: Column(
         mainAxisSize: MainAxisSize.min,
@@ -56,9 +69,10 @@ class _FlightPlannerScreenState extends State<FlightPlannerScreen> {
                 padding: const EdgeInsets.only(right: 16.0, left: 16.0),
                 child: SizedBox(
                   width: double.infinity,
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () {
-                      if (widget._airplane.fly()) {
+                      if (widget._airplane.canFly()) {
+                        widget._airplane.fly();
                         //TODO change to method that pops other containers
                         Navigator.pop(context);
                         Navigator.pop(context);
@@ -80,21 +94,37 @@ class _FlightPlannerScreenState extends State<FlightPlannerScreen> {
 
   @override
   void dispose() {
+    Player().nextTripProfit = 0;
     widget.gameManager.currentAirplane = null;
     super.dispose();
   }
 
   void selectDestination(BuildContext context, Airport airport) {
     log('selected destination ${airport.name}');
-    if (airport == widget._airplane.currentAirport) {
+    var lastAirport = (widget._airplane.destinationList.length == 0) ?
+      widget._airplane.currentAirport :
+      widget._airplane.destinationList.last;
+      
+
+    if(airport.locked) {
+      return;
+    }
+      
+    if (airport == lastAirport) {
+      widget._airplane.destinationList.removeLast();
+      setState(() {
+        Player().nextTripProfit = EconomyManager.nextTripProfit(widget._airplane);
+      });
       return;
     }
 
-    if(!GeographyHelper.isInRange(airport, widget._airplane)) {
+    if(!GeographyHelper.isInRange(airport, lastAirport, widget._airplane)) {
       return;
     }
 
-    widget._airplane.destination = airport;
+    widget._airplane.destinationList.add(airport);
+
+    Player().nextTripProfit = EconomyManager.nextTripProfit(widget._airplane);
 
     setState(() {
       

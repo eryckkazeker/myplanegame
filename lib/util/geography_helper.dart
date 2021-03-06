@@ -16,8 +16,8 @@ class GeographyHelper {
     return totalDistance;
   }
 
-  static bool isInRange(Airport destination, Airplane airplane) {
-    if (distance(destination, airplane.currentAirport) > airplane.range) {
+  static bool isInRange(Airport destination, Airport current, Airplane airplane) {
+    if (distance(destination, current) > airplane.range) {
       return false;
     }
     return true;
@@ -25,6 +25,6 @@ class GeographyHelper {
 
   static double flightTimeFromDistance(Airplane airplane, Airport destination) {
     var flightTimeInMinutes = distance(destination, airplane.currentAirport) / airplane.speed;
-    return flightTimeInMinutes * 60;
+    return flightTimeInMinutes * 60 * 15;
   }
 }
