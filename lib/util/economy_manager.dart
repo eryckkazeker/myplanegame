@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
 import 'package:pocketplanes2/game_constants/constants.dart';
@@ -32,7 +32,7 @@ class EconomyManager {
   }
 
   static int jobPrice(Airport origin, Airport destination) {
-    var random = Random();
+    var random = math.Random();
     var jobDistance = GeographyHelper.distance(origin, destination);
     return jobDistance.toInt() * 10 + (random.nextDouble() * 300 - 25).toInt();
   } 
@@ -52,6 +52,12 @@ class EconomyManager {
     });
 
     return tripRevenue - tripCost;
+  }
+
+  static int airplaneValue(Airplane airplane) {
+    var periods = airplane.totalFlightTime/PricingConstants.AIRPLANE_DEPRECIATION_PERIOD;
+    var rate = math.pow(1+PricingConstants.AIRPLANE_DEPRECIATION_RATE, periods);
+    return math.max((airplane.price ~/ rate), airplane.price~/2);
   }
 
 }
