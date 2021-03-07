@@ -5,8 +5,15 @@ import 'package:path_provider/path_provider.dart';
 
 class FileManager {
   static Future<String> _localPath() async {
-    var directory = await getExternalStorageDirectory();
-    return directory.path;
+    try {
+      var directory = await getExternalStorageDirectory();
+      return directory.path;
+    } catch (Exception) {
+      debugPrint('Error getting external directory. Trying fallback option');
+      var fallbackDirectory = await getApplicationDocumentsDirectory();
+      return fallbackDirectory.path;
+    }
+    
   }
 
   static Future<File> _getSaveDataFile() async {
