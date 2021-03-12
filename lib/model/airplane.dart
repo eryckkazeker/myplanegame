@@ -216,8 +216,7 @@ class Airplane extends MapObject {
   }
 
   double angleToDestination() {
-
-    if(destinationList.isEmpty) {
+    if (destinationList.isEmpty) {
       return 0;
     }
 
@@ -227,11 +226,11 @@ class Airplane extends MapObject {
     var inRads = math.atan2(yDistance, xDistance);
 
     if (inRads < 0)
-        inRads = inRads.abs();
+      inRads = inRads.abs();
     else
-        inRads = 2 * math.pi- inRads;
+      inRads = 2 * math.pi - inRads;
 
-    return inRads + (math.pi/2);
+    return inRads + (math.pi / 2);
   }
 
   Map<String, dynamic> toJson() => {
@@ -276,7 +275,9 @@ class Airplane extends MapObject {
         _destinationList = json['destinationList'] == null
             ? null
             : (json['destinationList'] as List)
-                .map((e) => GameManager().airports.firstWhere((airport) => airport.name == e['name']))
+                .map((e) => GameManager()
+                    .airports
+                    .firstWhere((airport) => airport.name == e['name']))
                 .toList(),
         super.positioned(json['x'], json['y']);
 }
