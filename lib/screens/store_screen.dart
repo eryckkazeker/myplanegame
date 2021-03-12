@@ -48,6 +48,10 @@ class _StoreScreenState extends State<StoreScreen> {
       return;
     }
 
+    if(airport == null) {
+      return;
+    }
+
     Player().pay(airplane.price);
 
     var newAirplane = Airplane.clone(airplane);
