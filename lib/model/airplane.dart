@@ -25,6 +25,7 @@ class Airplane extends MapObject {
   List<Airport> _destinationList = List.empty(growable: true);
   PlaneStatus _planeStatus = PlaneStatus.landed;
   Player _player = Player();
+  double _totalFlightTime;
   double _flightTime;
   Timer _moveTimer;
 
@@ -44,6 +45,7 @@ class Airplane extends MapObject {
     this._price = price;
     this._speed = speed;
     this._destinationList = List.empty(growable: true);
+    this._totalFlightTime = 0;
   }
 
   Airplane.clone(Airplane airplane) {
@@ -58,6 +60,7 @@ class Airplane extends MapObject {
     this._speed = airplane.speed;
     this._modelName = airplane.modelName;
     this._destinationList = airplane.destinationList;
+    this._totalFlightTime = airplane.totalFlightTime;
   }
 
   String get modelName => this._modelName;
@@ -73,6 +76,7 @@ class Airplane extends MapObject {
   List<Airport> get destinationList => this._destinationList;
   PlaneStatus get planeStatus => this._planeStatus;
   double get flightTime => this._flightTime;
+  double get totalFlightTime => this._totalFlightTime;
 
   set destinationList(List<Airport> airportList) {
     this._destinationList = airportList;
@@ -96,6 +100,10 @@ class Airplane extends MapObject {
 
   int totalJobs() {
     return passengerJobs.length + cargoJobs.length;
+  }
+
+  bool isFlying() {
+    return _planeStatus == PlaneStatus.flying;
   }
 
   bool boardJob(Job job) {
@@ -140,6 +148,8 @@ class Airplane extends MapObject {
     _planeStatus = PlaneStatus.flying;
     flightTime =
         GeographyHelper.flightTimeFromDistance(this, this.destinationList[0]);
+
+    _totalFlightTime += flightTime;
 
     Future.delayed(Duration(seconds: flightTime.toInt()), () {
       land();
@@ -206,8 +216,7 @@ class Airplane extends MapObject {
   }
 
   double angleToDestination() {
-
-    if(destinationList.isEmpty) {
+    if (destinationList.isEmpty) {
       return 0;
     }
 
@@ -217,11 +226,11 @@ class Airplane extends MapObject {
     var inRads = math.atan2(yDistance, xDistance);
 
     if (inRads < 0)
-        inRads = inRads.abs();
+      inRads = inRads.abs();
     else
-        inRads = 2 * math.pi- inRads;
+      inRads = 2 * math.pi - inRads;
 
-    return inRads + (math.pi/2);
+    return inRads + (math.pi / 2);
   }
 
   Map<String, dynamic> toJson() => {
@@ -237,6 +246,8 @@ class Airplane extends MapObject {
         'passengerJobs': _passengerJobs.map((item) => item.toJson()).toList(),
         'cargoJobs': _cargoJobs.map((item) => item.toJson()).toList(),
         'flightTime': _flightTime,
+        'totalFlightTime': _totalFlightTime,
+        'price': _price,
         'x': x,
         'y': y
       };
@@ -246,7 +257,9 @@ class Airplane extends MapObject {
         _name = json['name'],
         _range = json['range'],
         _speed = json['speed'],
+        _price = json['price'] ?? 10000,
         _flightTime = json['flightTime'],
+        _totalFlightTime = json['totalFlightTime'] ?? 0,
         _passengerCapacity = json['passengerCapacity'],
         _cargoCapacity = json['cargoCapacity'],
         _planeStatus = PlaneStatus.values
@@ -262,7 +275,9 @@ class Airplane extends MapObject {
         _destinationList = json['destinationList'] == null
             ? null
             : (json['destinationList'] as List)
-                .map((e) => GameManager().airports.firstWhere((airport) => airport.name == e['name']))
+                .map((e) => GameManager()
+                    .airports
+                    .firstWhere((airport) => airport.name == e['name']))
                 .toList(),
         super.positioned(json['x'], json['y']);
 }
