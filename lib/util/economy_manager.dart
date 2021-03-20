@@ -17,7 +17,7 @@ class EconomyManager {
       startPoint = destination;
     });
 
-    var tripCost = flightDistance.toInt() * GameManager.FUEL_COST * airplane.speed~/10;
+    var tripCost = flightDistance.toInt() * PricingConstants.FUEL_COST * airplane.speed~/10;
     debugPrint('Trip cost is \$$tripCost');
     
     return tripCost;

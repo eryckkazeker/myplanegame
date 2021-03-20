@@ -27,6 +27,7 @@ class Airplane extends MapObject {
   Player _player = Player();
   double _totalFlightTime;
   double _flightTime;
+  double _timePassed = 0;
   Timer _moveTimer;
 
   Airplane(String name, Airport airport,
@@ -151,34 +152,44 @@ class Airplane extends MapObject {
 
     _totalFlightTime += flightTime;
 
-    Future.delayed(Duration(seconds: flightTime.toInt()), () {
+    if(_timePassed <= flightTime) {
+      for(int i = 0; i < _timePassed; i++) {
+        move();
+      }
+      Future.delayed(Duration(seconds: flightTime.toInt()), () {
+        land();
+      });
+      _moveTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+        move();
+      });
+      _timePassed -= flightTime;
+    } else {
+      _timePassed -= flightTime;
       land();
-    });
-
-    _moveTimer = Timer.periodic(Duration(seconds: 1), (timer) {
-      move();
-    });
+    }
+    
+    
   }
 
   void resumeFlight() {
-    Future.delayed(Duration(seconds: flightTime.toInt()), () {
-      land();
-    });
-
-    _moveTimer = Timer.periodic(Duration(seconds: 1), (timer) {
-      move();
-    });
+    _timePassed = GameManager().timeSinceSave.toDouble();
+    fly();
   }
 
   void land() {
     currentAirport = destinationList[0];
     destinationList.removeAt(0);
     _planeStatus = PlaneStatus.landed;
-    _moveTimer.cancel();
+    if(_moveTimer != null) {
+      _moveTimer.cancel();
+    }
+    
     unloadPlane();
 
     if (destinationList.isNotEmpty) {
       fly();
+    } else {
+      _timePassed = 0;
     }
   }
 

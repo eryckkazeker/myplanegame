@@ -13,7 +13,6 @@ class GameManager {
 
   static final GameManager _gameManager = GameManager._internal();
   static const int MAX_JOBS__PER_AIRPORT = 5;
-  static const int FUEL_COST = 1;
 
   GameManager._internal();
 
@@ -21,6 +20,7 @@ class GameManager {
   List<Airport> _unlockedAirports = List.empty(growable: true);
   List<Airplane> _airplanes = List.empty(growable: true);
   List<Airplane> _store = List.empty(growable: true);
+  int _timeSinceSave;
   Matrix4 _lastMapPosition;
 
   Airplane _currentAirplane;
@@ -37,6 +37,7 @@ class GameManager {
   List<Airport> get unlockedAirports => this._unlockedAirports;
   Matrix4 get lastMapPosition => this._lastMapPosition;
   Airplane get currentAirplane => this._currentAirplane;
+  int get timeSinceSave => this._timeSinceSave;
 
   void addAirport(Airport airport) {
     this._airports.add(airport);
@@ -78,7 +79,8 @@ class GameManager {
       'airplanes': airplanes.map((e) => e.toJson()).toList(),
       'airports': airports.map((e) => e.toJson()).toList(),
       'layovers': layoverMap,
-      'position': _lastMapPosition.storage
+      'position': _lastMapPosition.storage,
+      'savedate': DateTime.now().millisecondsSinceEpoch
     };
 
     var saveDataJson = jsonEncode(saveData);
@@ -88,9 +90,15 @@ class GameManager {
 
   Future<void> loadGame() async {
     debugPrint('Loading game');
+    
     var gameData = await FileManager.readSaveFile();
     debugPrint('loaded data: [$gameData]');
     var gameDataMap = jsonDecode(gameData);
+
+    var currentDate = DateTime.now().millisecondsSinceEpoch;
+    var lastSave = (gameDataMap['savedate'] == null) ? currentDate : gameDataMap['savedate'];
+
+    _timeSinceSave = (currentDate - lastSave) ~/ 1000;
 
     debugPrint('loading Player Data');
     Player().balance = gameDataMap['player']['balance'];
@@ -132,13 +140,15 @@ class GameManager {
       });
      });
 
-     unlockedAirports = airports.where((airport) => airport.locked == false).toList();
+    unlockedAirports = airports.where((airport) => airport.locked == false).toList();
 
-     debugPrint('Loading map position');
+    debugPrint('Loading map position');
 
-     var positionList = (gameDataMap['position'] as List).map((e) => double.parse(e.toString())).toList();
-     
-     _lastMapPosition = Matrix4.fromFloat64List(Float64List.fromList(positionList));
+    var positionList = (gameDataMap['position'] as List).map((e) => double.parse(e.toString())).toList();
+    
+    _lastMapPosition = Matrix4.fromFloat64List(Float64List.fromList(positionList));
+
+    debugPrint('[$_timeSinceSave]s passed since last save');
 
     debugPrint('Done Loading');
   }

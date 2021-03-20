@@ -40,6 +40,12 @@ class JobGenerator {
     });
   }
 
+  void generateJobsBatch(int jobQuantity) {
+    for (int i = 0; i < jobQuantity; i++) {
+      generateRandomJob();
+    }
+  }
+
   void generateRandomJob() {
     bool jobGenerated = false;
     

@@ -1,6 +1,8 @@
+import 'dart:math' as math;
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:pocketplanes2/game_constants/constants.dart';
 import 'package:pocketplanes2/model/airplane.dart';
 import 'package:pocketplanes2/model/airplanes/c_172_c.dart';
 import 'package:pocketplanes2/model/airplanes/c_172_m.dart';
@@ -172,12 +174,19 @@ class GameGenerator {
     buildStore();
     
 
-    timer = Timer.periodic(Duration(seconds: 60), (timer) { jobGenerator.generateRandomJob(); });
+    timer = Timer.periodic(Duration(seconds: JobConstants.JOB_GENERATION_INTERVAL), (timer) { jobGenerator.generateRandomJob(); });
 
     if (await FileManager.saveFileExists()) {
       debugPrint('SAVE FILE EXISTS');
       await gameManager.loadGame();
-      jobGenerator.generateJobs();
+      
+      var jobsToGenerate = gameManager.timeSinceSave ~/ JobConstants.JOB_GENERATION_INTERVAL;
+
+      if (jobsToGenerate > 0) {
+        debugPrint('generating $jobsToGenerate jobs');
+        var jobCap = gameManager.airports.length * GameManager.MAX_JOBS__PER_AIRPORT;
+        jobGenerator.generateJobsBatch(math.min(jobsToGenerate, jobCap));
+      }
       return;
     }
 
