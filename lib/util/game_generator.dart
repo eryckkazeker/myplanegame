@@ -131,6 +131,95 @@ class GameGenerator {
     guayaquil.x = 296.16;
     guayaquil.y = 435.19;
 
+    // Panama
+    Airport panama = Airport('Panama');
+    panama.x = 295.38;
+    panama.y = 407.68;
+
+    // Costa Rica
+    Airport sanJose = Airport('San Jose');
+    sanJose.x = 284.72;
+    sanJose.y = 405.38;
+
+    // Honduras
+    Airport tegucigalpa = Airport('Tegucigalpa');
+    tegucigalpa.x = 279.29;
+    tegucigalpa.y = 396.97;
+
+    // Mexico
+    Airport cancun = Airport('Cancun');
+    cancun.x = 275.48;
+    cancun.y = 379.34;
+    Airport mexicoCity = Airport('Mexico City');
+    mexicoCity.x = 248.16;
+    mexicoCity.y = 382.73;
+    Airport oaxaca = Airport('Oaxaca');
+    oaxaca.x = 257.85;
+    oaxaca.y = 389.64;
+    Airport monterrey = Airport('Monterrey');
+    monterrey.x = 246.99;
+    monterrey.y = 367.27;
+
+    // Cuba
+    Airport havana = Airport('Havana');
+    havana.x = 288.07;
+    havana.y = 374.06;
+
+    // United States
+    Airport miami = Airport('Miami');
+    miami.x = 292.66;
+    miami.y = 366.16;
+    Airport losAngeles = Airport('Los Angeles');
+    losAngeles.x = 203.67;
+    losAngeles.y = 344.65;
+    Airport sanFrancisco = Airport('San Francisco');
+    sanFrancisco.x = 194.15;
+    sanFrancisco.y = 335.33;
+    Airport lasVegas = Airport('Las Vegas');
+    lasVegas.x = 211.07;
+    lasVegas.y = 337.54;
+    Airport phoenix = Airport('Phoenix');
+    phoenix.x = 218.08;
+    phoenix.y = 346.57;
+    Airport denver = Airport('Denver');
+    denver.x = 230.36;
+    denver.y = 332.51;
+    Airport houston = Airport('Houston');
+    houston.x = 257.20;
+    houston.y = 355.64;
+    Airport dallas = Airport('Dallas');
+    dallas.x = 252.21;
+    dallas.y = 345.73;
+    Airport oklahoma = Airport('Oklahoma');
+    oklahoma.x = 247.11;
+    oklahoma.y = 337.68;
+    Airport kansasCity = Airport('Kansas City');
+    kansasCity.x = 259.14;
+    kansasCity.y = 331.64;
+    Airport chicago = Airport('Chicago');
+    chicago.x = 276.30;
+    chicago.y = 323.66;
+    Airport atlanta = Airport('Atlanta');
+    atlanta.x = 282.06;
+    atlanta.y = 342.62;
+    Airport nashville = Airport('Nashville');
+    nashville.x = 276.90;
+    nashville.y = 335.86;
+    Airport washington = Airport('Washington');
+    washington.x = 301.68;
+    washington.y = 331.32;
+    Airport newYork = Airport('New York');
+    newYork.x = 308.31;
+    newYork.y = 325.84;
+
+    //Canada
+    Airport toronto = Airport('Toronto');
+    toronto.x = 297.86;
+    toronto.y = 317.25;
+    Airport montreal = Airport('Montreal');
+    montreal.x = 308.38;
+    montreal.y = 311.60;
+
     gameManager.addAirport(saoPaulo);
     gameManager.addAirport(manaus);
     gameManager.addAirport(recife);
@@ -146,7 +235,7 @@ class GameGenerator {
     gameManager.addAirport(buenosAires);
     gameManager.addAirport(santiago);
     gameManager.addAirport(beloHorizonte);
-    gameManager.addAirport(medelin);
+    //gameManager.addAirport(medelin);
     gameManager.addAirport(santaCruz);
     gameManager.addAirport(cali);
     gameManager.addAirport(laPaz);
@@ -158,6 +247,32 @@ class GameGenerator {
     gameManager.addAirport(mendoza);
     gameManager.addAirport(saoLuis);
     gameManager.addAirport(santarem);
+    //gameManager.addAirport(panama);
+    //gameManager.addAirport(sanJose);
+    gameManager.addAirport(tegucigalpa);
+    gameManager.addAirport(cancun);
+    gameManager.addAirport(mexicoCity);
+    gameManager.addAirport(havana);
+    gameManager.addAirport(miami);
+    gameManager.addAirport(oaxaca);
+    gameManager.addAirport(losAngeles);
+    gameManager.addAirport(sanFrancisco);
+    gameManager.addAirport(lasVegas);
+    gameManager.addAirport(phoenix);
+    gameManager.addAirport(denver);
+    gameManager.addAirport(houston);
+    gameManager.addAirport(dallas);
+    //gameManager.addAirport(monterrey);
+    //gameManager.addAirport(oklahoma);
+    gameManager.addAirport(kansasCity);
+    gameManager.addAirport(chicago);
+    gameManager.addAirport(atlanta);
+    gameManager.addAirport(nashville);
+    gameManager.addAirport(washington);
+    gameManager.addAirport(newYork);
+    gameManager.addAirport(toronto);
+    gameManager.addAirport(montreal);
+
 
     saoPaulo.unlock();
     curitiba.unlock();
