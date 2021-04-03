@@ -72,7 +72,7 @@ class _FlightPlannerScreenState extends State<FlightPlannerScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (widget._airplane.canFly()) {
-                        widget._airplane.fly();
+                        widget._airplane.fly(computeTotalTime: true);
                         //TODO change to method that pops other containers
                         Navigator.pop(context);
                         Navigator.pop(context);

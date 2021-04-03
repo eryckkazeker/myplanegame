@@ -145,12 +145,14 @@ class Airplane extends MapObject {
     return true;
   }
 
-  void fly() {
+  void fly({bool computeTotalTime = false}) {
     _planeStatus = PlaneStatus.flying;
     flightTime =
         GeographyHelper.flightTimeFromDistance(this, this.destinationList[0]);
 
-    _totalFlightTime += flightTime;
+    if (computeTotalTime) {
+      _totalFlightTime += flightTime;
+    }
 
     if(_timePassed <= flightTime) {
       for(int i = 0; i < _timePassed; i++) {

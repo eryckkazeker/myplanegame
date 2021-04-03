@@ -120,9 +120,11 @@ class GameManager {
     debugPrint('loading airport data');
     var airportDataMap = gameDataMap['airports'];
     (airportDataMap as List).map((e) {
-      var airport = airports.firstWhere((element) => element.name == e['name']);
-      airport.layoverCapacity = e['layoverCapacity'];
-      airport.locked = e['locked'];
+      var airport = airports.firstWhere((element) => element.name == e['name'], orElse: () => null);
+      if(airport != null) {
+        airport.layoverCapacity = e['layoverCapacity'];
+        airport.locked = e['locked'];
+      }
       return airport;
     }).toList();
 
@@ -132,11 +134,13 @@ class GameManager {
     var layoverDataMap = (layoverData as Map);
 
     layoverDataMap.keys.forEach((key) {
-      var airport = airports.firstWhere((airport) => airport.name == key);
+      var airport = airports.firstWhere((airport) => airport.name == key, orElse: () => null);
       var jobList = (layoverDataMap[key] as List).map((job) => Job.fromJson(job)).toList();
       
       jobList.forEach((element) {
-        airport.addLayoverJob(element);
+        if (airport != null) {
+          airport.addLayoverJob(element);
+        }
       });
      });
 
