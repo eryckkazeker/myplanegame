@@ -6,8 +6,8 @@ class MapEditorScreen extends StatefulWidget {
 }
 
 class _MapEditorScreenState extends State<MapEditorScreen> {
-  double x = 374.17;
-  double y = 483.80;
+  double x = 465.53;
+  double y = 331.59;
   TransformationController controller = TransformationController();
   
   @override

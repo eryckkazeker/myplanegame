@@ -211,6 +211,9 @@ class GameGenerator {
     Airport newYork = Airport('New York');
     newYork.x = 308.31;
     newYork.y = 325.84;
+    Airport portland = Airport('Portland');
+    portland.x = 191.71;
+    portland.y = 312.48;
 
     //Canada
     Airport toronto = Airport('Toronto');
@@ -219,6 +222,115 @@ class GameGenerator {
     Airport montreal = Airport('Montreal');
     montreal.x = 308.38;
     montreal.y = 311.60;
+    Airport vancouver = Airport('Vancouver');
+    vancouver.x = 192.98;
+    vancouver.y = 301.38;
+    Airport calgary = Airport('Calgary');
+    calgary.x = 219.06;
+    calgary.y = 297.18;
+    Airport edmonton = Airport('Edmonton');
+    edmonton.x = 224.96;
+    edmonton.y = 287.31;
+    Airport kamloops = Airport('Kamloops');
+    kamloops.x = 204.24;
+    kamloops.y = 298.45;
+
+    //Portugal
+    Airport lisbon = Airport('Lisbon');
+    lisbon.x = 465.53;
+    lisbon.y = 331.59;
+
+    //Spain
+    Airport madrid = Airport('Madrid');
+    madrid.x = 474.73;
+    madrid.y = 327.89;
+    Airport barcelona = Airport('Barcelona');
+    barcelona.x = 490.61;
+    barcelona.y = 324.18;
+    //England
+    Airport london = Airport('London');
+    london.x = 485.24;
+    london.y = 294.22;
+    //France
+    Airport paris = Airport('Paris');
+    paris.x = 492.08;
+    paris.y = 304.73;
+    //Germany
+    Airport berlin = Airport('Berlin');
+    berlin.x = 518.73;
+    berlin.y = 293.81;
+    //Denmark
+    Airport copenhage = Airport('Copenhage');
+    copenhage.x = 514.87;
+    copenhage.y = 282.52;
+    //Italy
+    Airport rome = Airport('Rome');
+    rome.x = 516.62;
+    rome.y = 323.38;
+    //Sweden
+    Airport stockholm = Airport('Stockholm');
+    stockholm.x = 529.19;
+    stockholm.y = 267.65;
+    //Norway
+    Airport oslo = Airport('Oslo');
+    oslo.x = 510.50;
+    oslo.y = 266.85;
+    //Netherlands
+    Airport amsterdam = Airport('Amsterdam');
+    amsterdam.x = 499.02;
+    amsterdam.y = 291.14;
+    //Ireland
+    Airport dublin = Airport('Dublin');
+    dublin.x = 469.94;
+    dublin.y = 289.75;
+    //Switzerland
+    Airport zurich = Airport('Zurich');
+    zurich.x = 506.95;
+    zurich.y = 310.21;
+    //Finland
+    Airport helsinki = Airport('Helsinki');
+    helsinki.x = 545.14;
+    helsinki.y = 264.46;
+    //Belarus
+    Airport minsk = Airport('Minsk');
+    minsk.x = 549.88;
+    minsk.y = 287.49;
+    //Poland
+    Airport warsaw = Airport('Warsaw');
+    warsaw.x = 536.95;
+    warsaw.y = 292.57;
+    //Czech Republic
+    Airport prague = Airport('Prague');
+    prague.x = 521.20;
+    prague.y = 299.26;
+    //Austria
+    Airport viena = Airport('Viena');
+    viena.x = 526.93;
+    viena.y = 304.13;
+    //Hungary
+    Airport budapest = Airport('Budapest');
+    budapest.x = 533.60;
+    budapest.y = 309.45;
+    //Ukraine
+    Airport kiev = Airport('Kiev');
+    kiev.x = 559.93;
+    kiev.y = 296.87;
+    //Greece
+    Airport athens = Airport('Athens');
+    athens.x = 543.31;
+    athens.y = 334.95;
+    //Turkey
+    Airport istanbul = Airport('Istanbul');
+    istanbul.x = 556.18;
+    istanbul.y = 326.12;
+    Airport ankara = Airport('Ankara');
+    ankara.x = 564.40;
+    ankara.y = 330.26;
+    //Syria
+    Airport damascus = Airport('Damascus');
+    damascus.x = 575.48;
+    damascus.y = 346.90;
+
 
     gameManager.addAirport(saoPaulo);
     gameManager.addAirport(manaus);
@@ -272,7 +384,35 @@ class GameGenerator {
     gameManager.addAirport(newYork);
     gameManager.addAirport(toronto);
     gameManager.addAirport(montreal);
-
+    gameManager.addAirport(portland);
+    gameManager.addAirport(vancouver);
+    gameManager.addAirport(calgary);
+    gameManager.addAirport(edmonton);
+    gameManager.addAirport(kamloops);
+    gameManager.addAirport(lisbon);
+    gameManager.addAirport(madrid);
+    gameManager.addAirport(paris);
+    gameManager.addAirport(london);
+    gameManager.addAirport(barcelona);
+    gameManager.addAirport(berlin);
+    gameManager.addAirport(copenhage);
+    gameManager.addAirport(rome);
+    gameManager.addAirport(stockholm);
+    gameManager.addAirport(oslo);
+    gameManager.addAirport(amsterdam);
+    gameManager.addAirport(dublin);
+    gameManager.addAirport(zurich);
+    gameManager.addAirport(helsinki);
+    gameManager.addAirport(minsk);
+    gameManager.addAirport(warsaw);
+    gameManager.addAirport(prague);
+    gameManager.addAirport(viena);
+    gameManager.addAirport(budapest);
+    gameManager.addAirport(kiev);
+    gameManager.addAirport(athens);
+    gameManager.addAirport(istanbul);
+    gameManager.addAirport(ankara);
+    gameManager.addAirport(damascus);
 
     saoPaulo.unlock();
     curitiba.unlock();
@@ -289,17 +429,18 @@ class GameGenerator {
 
     timer = Timer.periodic(Duration(seconds: 60), (timer) { jobGenerator.generateRandomJob(); });
 
+/*
     if (await FileManager.saveFileExists()) {
       debugPrint('SAVE FILE EXISTS');
       await gameManager.loadGame();
       jobGenerator.generateJobs();
       return;
     }
-
+*/
     debugPrint('SAVE FILE NOT FOUND! GENERATING NEW GAME');
 
-    Airplane pl1 = C172P('PL0001',saoPaulo);
-    Airplane pl3 = C172C('PL0002',rioDeJaneiro);
+    Airplane pl1 = C172P('PL0001',athens);
+    Airplane pl3 = C208C('PL0002',rioDeJaneiro);
     gameManager.addPlane(pl1);
     gameManager.addPlane(pl3);
 

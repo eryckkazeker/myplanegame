@@ -7,7 +7,7 @@ class Airport extends MapObject with ChangeNotifier {
   List<Job> _currentJobs = List.empty(growable: true);
   List<Job> _layovers = List.empty(growable: true);
   int _layoverCapacity = 3;
-  bool _locked = true;
+  bool _locked = false;
 
   Airport(this._name);
 
